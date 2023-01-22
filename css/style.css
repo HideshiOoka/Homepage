@@ -1,0 +1,133 @@
+@charset "UTF-8";
+body{
+	background-color:#F7F9FB
+}
+.wrapper{
+	margin: 0 auto 0 auto;
+	width: 900px;
+}
+h2{
+	color: #033453;
+	font-size: 20px;
+	border-bottom-width: 2px;
+	border-bottom-style: dotted;
+	border-bottom-color: #033453;
+	margin-top: 20px;
+	margin-right: 0px;
+	margin-bottom: 20p;
+	margin-left: 0px;
+	padding-top: 10px;
+	padding-right: 10px;
+	padding-bottom: 3px;
+	padding-left: 5px;
+}
+h3{
+	color: #910C07;
+	font-size: 16px;
+	}
+
+p{
+		line-height: 160%;
+		color : #000000;
+}
+
+a:link{color: #000000;}
+a:visited{color: #000000;}
+a:hover{color: #F48153;}
+a:active{color: #F48153;}
+
+img{border-style: none;}
+
+
+/*For all pages - nav*/
+#nav li{
+	display: inline;
+	list-style-type: none;
+	padding-right: 30px;
+}
+
+#nav{
+	margin: 0 0 5 0 ;
+	padding: 1px 30px 1px 30px;
+	background-color: #033453;
+}
+
+#nav li a:link{
+	color: #F7F9FB;
+	text-decoration: none;
+}
+#nav li a:visited{
+	color: #F7F9FB;
+	text-decoration: none;
+}
+#nav li a:hover{
+	color: #F48153;
+	text-decoration: none;
+}
+#nav li a:active{
+	color: #F48153; /* not sure what this is for*/
+	text-decoration: none;
+}
+
+#footer{
+		margin-top: 30px;
+		background-color: #033453;/* 5085A5*/
+}
+#footer p{
+	color: #F7F9FB;
+	margin: 0 0 10 0 ;
+	padding: 1px 30px 1px 30px;
+	text-decoration: none;
+}
+
+#scroll {
+		overflow-y: scroll;
+		height: 100px;
+}
+
+
+
+table.news{
+	padding: 8px 8px 8px 8px;
+	text-align: left;
+	border-collapse: collapse;
+}
+
+.fig{
+	text-align: center;
+	margin-top: 30px; 
+}
+p.caption{	font-style: italic;
+			margin-top: -5px
+			}
+
+
+
+/* Individual Styles*/
+/*index.html */
+.TOC{margin: 0px 0 0 0;}
+.news_item{margin: 0 100 0 0 ;}
+	
+/*about.html */
+.float img{
+	float: left;
+	padding-right: 1em;
+}
+
+table.info{
+	border-collapse: collapse;
+	border: 1px solid #033453;
+}
+table.info th, table.info td{
+	padding: 8px 8px 8px 8px;
+	border: 1px solid #033453;
+	text-align: left;
+	vertical-align: middle;
+}
+table.info th{
+	background-color: #F7F9FB;
+	color: #033453;
+}
+
+
+
