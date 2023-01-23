@@ -52,7 +52,9 @@ def get_author_key(authors):
     return author_key   
 
 def format_title(title):
-    return title.title().replace("Ph ","pH ")
+    new_title = title.title().replace("Ph ","pH ").replace("Ftir","FTIR").replace("Co2","CO2").replace("Mos2","MoS2")
+    print(new_title)
+    return new_title
 
 def format_new_article(entry_dict):
     new_article = "@article{" + entry_dict["bib_key"] 

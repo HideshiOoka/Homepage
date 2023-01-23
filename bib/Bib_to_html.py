@@ -17,11 +17,13 @@ def sort(authors):
     return sorted_authors
 
 
-filename = "Publications.bib"
-with open(filename, encoding = "UTF-8") as f:
+
+with open("Publications.bib", encoding = "UTF-8") as f:
     bib_data = f.read().replace("\n", "")
 entries = bib_data.split("@")[1:]
 
+corresponding_authors = str(bib_data.count("Ooka*"))
+first_authors = str(bib_data.count("@article{Ooka"))
 out_html = ""
 year_header = "2030"
 for entry in entries:
@@ -39,7 +41,11 @@ for entry in entries:
 
 out_html = out_html.replace("MoS2", "MoS<sub>2</sub>").replace("CO2", "CO<sub>2</sub>").replace("{\`e}","&egrave")
 
-with open(filename.replace("bib","html"), 'w') as f:
+with open("../Publications_Template.html","r") as f:
+    template = f.read()
+
+out_html = template.replace("<!-- ADD_PUBLICATION_LIST_HERE-->", out_html).replace("CORRESPONDING_AUTHORS",corresponding_authors).replace("FIRST_AUTHORS", first_authors)
+with open("../Publications.html", 'w') as f:
     f.write(out_html)        
 
 
