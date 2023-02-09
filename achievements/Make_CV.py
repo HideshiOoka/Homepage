@@ -7,11 +7,6 @@ pars = doc.paragraphs
 
 items = ["Heading", "Publications", "Presentations","Patents","Press"]
 for item in items:
-    p = doc.add_paragraph()
-    p.add_run(item).font.size = Pt(15)
-doc.add_paragraph("test",style = "Heading 1")
-doc.save("CV.docx")
-#%%
-publications = p.text
-txt = update(publications)
+    doc.add_paragraph(item,style = "Heading 1")
 
+doc.save("CV.docx")
