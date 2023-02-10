@@ -1,0 +1,33 @@
+
+<!doctype html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Ooka | Vacancies</title>
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+
+    <script src="//code.jquery.com/jquery.min.js"></script>
+<!--Navigation bar-->
+</head>
+    
+<body>
+<div id="nav-placeholder">
+
+</div>
+
+<script>
+$(function(){
+  $("#nav-placeholder").load("nav.html");
+});
+</script>
+<!--end of Navigation bar-->
+aaaaa
+
+<script>
+  $.get("navigation.html", function("nav.html"){
+      $("#nav-placeholder").replaceWith("nav.html");
+  });
+  </script>
+</body>
+
+</html>
