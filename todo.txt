@@ -1,4 +1,4 @@
-add blog article about TD and programming for students
+add blog article about TD
 add Japanese using JS
 Presentation list
 add RIKEN link
