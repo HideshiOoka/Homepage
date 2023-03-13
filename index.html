@@ -9,17 +9,12 @@
 
 <body>
 <div class="wrapper">
-	<ul id="nav">
-		<li><a href="index.html">Home</a></li>
-		<li><a href="About_Me.html">About Me</a></li>
-		<li><a href="Research.html">Research</a></li>
-		<li><a href="Publications.html">Publications</a></li>
-		<li><a href="Vacancies.html">Vacancies</a></li>
-		<li><a href="Blog.html">Blog</a></li>
-		<li><a href="Contact.html">Contact</a></li>
-		<li><a href="index_jp.html">Japanese</a></li>
-	</ul>
-
+	<div id="nav-placeholder"></div>
+	<script>
+		$(function(){
+		  $("#nav-placeholder").load("nav.html");
+		});
+	</script>
 	
 
 	<div class="fig">
