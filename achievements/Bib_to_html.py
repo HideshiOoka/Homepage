@@ -45,9 +45,25 @@ with open("../Publications_Template.html","r") as f:
     template = f.read()
 
 out_html = template.replace("<!-- ADD_PUBLICATION_LIST_HERE-->", out_html).replace("CORRESPONDING_AUTHORS",corresponding_authors).replace("FIRST_AUTHORS", first_authors)
-with open("../Publications.html", 'w') as f:
-    f.write(out_html)        
+    
+translate_dict = {"Scientific Publications":"論文",
+                  "Corresponding Author":"責任著者",
+                  "First Author":"筆頭著者",
+                  "Last Author":"最終著者",
+                  "Patents":"知財・特許"}    
 
+def translate(txt):
+    for k,v in translate_dict.items():
+        print(k,v)
+        txt = txt.replace(k,v)
+    return txt   
+out_html_jp = translate(out_html)
+
+
+with open("../Publications.html", 'w') as f:
+    f.write(out_html)    
+with open("../Publications_jp.html", 'w') as f:
+    f.write(out_html_jp)        
 
 
 
