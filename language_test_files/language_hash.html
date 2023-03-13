@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <p id ="contents"></p>
+    <div class="controls">
+        <img src = "../images/US_Flag.png" id = "engBtn" width = "25">
+        <img src = "../images/JP_Flag.png" id = "jpBtn" width = "25">
+    </div>
+    <script>
+        // var dataReload = document.querySelectorAll("data-reload");
+        var language = {
+            eng: {
+                welcome: "Welcome contents"
+            },
+            jp: {
+                welcome: "日本語"
+            }
+        };
+        if (window.location.hash && window.location.hash ==="#jp"){
+                contents.textContent = language.jp.welcome
+        } else {
+            contents.textContent = language.eng.welcome
+        }
+
+        var engBtn = document.getElementById("engBtn");
+        var jpBtn = document.getElementById("jpBtn");
+
+        engBtn.onclick = function() {
+            window.location.hash='#eng';
+            location.reload()
+        }     
+        jpBtn.onclick = function() {
+            window.location.hash='#jp';
+            location.reload()
+        }      
+    </script>
+
+</body>
+</html>
+

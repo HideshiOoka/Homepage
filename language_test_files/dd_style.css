@@ -1,0 +1,95 @@
+.wrapper {
+    width: 1200px;
+    margin: 0 auto;
+}
+.nav__lists {
+    display: flex;
+}
+.nav__lists li {
+    width: 20%;
+    height: 60px;
+    background-color: #E5F0F8;
+    position: relative;
+    transition: all .3s;
+}
+.nav__lists li:hover {
+    background-color: #0071BB;
+}
+.nav__lists li:not(:first-child)::before {
+    content: "";
+    width: 1px;
+    height: 100%;
+    background-color: #fff;
+    position: absolute;
+    top: 0;
+    left: 0;
+    transition: all .3s;
+}
+.nav__lists li:hover::before {
+    background-color: #0071BB;
+}
+.nav__lists li {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    text-decoration: none;
+    color: #1b4059;
+    font-size: 15px;
+    letter-spacing: 0.05em;
+    font-weight: 600;
+    transition: all .3s;
+}
+.nav__lists li:hover a {
+    color: #fff;
+}
+
+.dropdown__lists {
+    display: none;/*デフォルトでは非表示の状態にしておく*/
+    width: 100%;
+    position: absolute;
+    top: 60px;
+    left: 0;
+}
+.nav__lists li:hover .dropdown__lists {
+    display: block;/*Gナビメニューにホバーしたら表示*/
+}
+.dropdown__list {
+    background-color: #004d80;
+    height: 60px;
+    transition: all .3s;
+    position: relative;
+}
+.dropdown__list:not(:first-child)::before{
+    content: "";
+    width: 100%;
+    height: 1px;
+    background-color: #3492d1;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+.dropdown__list:hover {
+    background-color: #003558;
+}
+.dropdown__list a {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
+    text-decoration: none;
+    position: relative;
+}
+.dropdown__list a::before {
+    content: '';
+    display: block;
+    width: 6px;
+    height: 6px;
+    border-top: 2px solid #fff;
+    border-left: 2px solid #fff;
+    transform: rotate(135deg);
+    position: absolute;
+    right: 15px;
+    top: calc(50% - 5px);
+}

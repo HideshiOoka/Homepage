@@ -27,32 +27,29 @@ h3{
 	}
 
 p{
-		line-height: 160%;
-		color : #000000;
-		text-align: justify
+	line-height: 160%;
+	color : #000000;
+	text-align: justify
 }
 
 a:link{color: #000000;}
 a:visited{color: #000000;}
 a:hover{color: #F48153;}
 a:active{color: #F48153;}
-
 img{border-style: none;}
 
 
 /*For all pages - nav*/
-#nav li{
-	display: inline;
-	list-style-type: none;
-	padding-right: 30px;
-}
-
 #nav{
 	margin: 0 0 5 0 ;
 	padding: 1px 30px 1px 30px;
 	background-color: #033453;
 }
-
+#nav li{
+	display: inline;
+	list-style-type: none;
+	padding-right: 30px;
+}
 #nav li a:link{
 	color: #F7F9FB;
 	text-decoration: none;
@@ -70,6 +67,67 @@ img{border-style: none;}
 	text-decoration: none;
 }
 
+.nav-dropdown:hover .nav-dropdown-menu {
+	display: block;
+}
+.nav-dropdown-menu {
+	display: none;
+	position: absolute;
+	width: 90px;
+	top: 50px;
+	right: 600px;
+	margin :0;
+	padding :0;
+	background-color: #fff;
+	border: 1px solid;
+	box-shadow: 0px 1px 10px rgba(0,0,0,0.2);
+	border-radius: 5px;
+}
+.nav-dropdown-menu li{
+	list-style:none;
+	display: block;
+	justify-content: space-between; 
+}
+.nav-dropdown-menu li a{
+	width: 140px;
+	display: block;
+	padding: 5px 10px;
+}
+
+.lang-menu ul li a:before{
+	content: "";
+	display: inline-block;
+	width: 32px;
+	height: 32px;
+	margin-right: 5px;
+	vertical-align: middle;
+	background-image: images/US_Flag;
+}
+.lang-menu ul li a:hover {
+	background-color: #f2f2f2;
+	
+}
+.eng:before{
+	background-image: images/US_Flag;
+}
+
+.jp:before{
+	background-image: images/JP_Flag;
+}
+
+.lang-menu:hover ul{
+	display:block;
+}
+
+
+
+
+
+
+
+
+
+
 #footer{
 		margin-top: 30px;
 		background-color: #033453;/* 5085A5*/
@@ -85,8 +143,6 @@ img{border-style: none;}
 		overflow-y: scroll;
 		height: 100px;
 }
-
-
 
 table.news{
 	padding: 8px 8px 8px 8px;
