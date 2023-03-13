@@ -31,7 +31,8 @@ def make_title(page):
     except KeyError:
         pass
     if title =="":
-        title = page.title()
+        title = page.replace(".html","").title()
+    print(title)
     return title
 
 def get_contents(page):
@@ -49,7 +50,6 @@ for page in page_list:
         contents = get_contents(page)
         title = make_title(page)
         output_html = html_template.replace("NAV_BAR",nav).replace("CONTENTS",contents).replace("PAGE_TITLE",title)
-        """
+
         with open(save_file_name, "w") as f:
             f.write(output_html)
-        """
