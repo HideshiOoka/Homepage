@@ -44,57 +44,66 @@ img {
 	max-width: 100%;
 	height: auto;
 }
-
 /* For all pages - nav */
-#nav li {
-	display: inline;
-	list-style-type: none;
-	margin-right: 15px;
-}
-
 #nav {
 	margin: 0;
 	padding: 10px;
 	background-color: #033453;
 }
 
+#nav li {
+	display: block;
+	margin-bottom: 10px;
+}
+
 #nav li a {
 	color: #F7F9FB;
 	text-decoration: none;
+	display: block;
+	padding: 5px 10px;
 }
 
 #nav li a:hover {
-	color: #F48153;
+	background-color: #F48153;
 }
 
-#footer {
-	margin-top: 30px;
-	background-color: #033453;
-	color: #F7F9FB;
-	padding: 10px;
+.menu-icon {
+	display: none; /* Hide the menu icon by default */
 }
 
-#scroll {
-	overflow-y: scroll;
-	height: 200px;
+@media only screen and (max-width: 768px) {
+	/* Adjustments for mobile devices */
+	#nav {
+		padding: 0;
+	}
+
+	#nav li {
+		margin-bottom: 5px;
+	}
+
+	#nav li a {
+		padding: 10px;
+	}
+
+	/* Show the menu icon */
+	.menu-icon {
+		display: inline-block;
+		color: #F7F9FB;
+		font-size: 20px;
+		padding: 10px;
+		cursor: pointer;
+	}
+
+	/* Hide the navigation links */
+	#nav ul {
+		display: none;
+	}
+
+	#nav.mobile-open ul {
+		display: block;
+	}
 }
 
-table.news {
-	padding: 8px;
-	text-align: left;
-	border-collapse: collapse;
-}
-
-.fig {
-	text-align: center;
-	margin-top: 30px;
-}
-
-p.caption {
-	font-style: italic;
-	margin-top: -5px;
-	text-align: center;
-}
 
 /* Individual Styles */
 
