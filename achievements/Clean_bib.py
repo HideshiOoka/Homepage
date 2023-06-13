@@ -8,11 +8,18 @@ Created on Thu Dec 10 17:22:44 2020
 """
 import pandas as pd
 import re
+from titlecase import titlecase
+# https://github.com/ppannuto/python-titlecase
+# pip install titlecase
 
+# filename = "Dissipative_CRN.bib"
+filename = "Publications.bib"
+#filename = "UBP1b.bib"
 def check(entry):
     if "=\"" in entry:
         print("This entry has quotation marks instead of parenthesses")
         print(entry)
+        # This warning shouldn't occur if bibtex is copied from Github
 
 def get_abbrv_key(journal):
     abbrv, j_key = "", ""
@@ -28,7 +35,8 @@ def get_abbrv_key(journal):
         if abbrv.upper() == ABBRV:
             j_key = KEY
     if j_key =="":
-        j_key = abbrv.replace(" ", "").replace(".","")     
+        j_key = abbrv.replace(" ", "").replace(".","")
+    j_key = re.sub(r"[^a-zA-Z0-9]", "", j_key)
     return abbrv,j_key     
 
 def restore_fullname(fullname):
@@ -42,17 +50,20 @@ def restore_fullname(fullname):
 
 def get_author_key(authors):
     if "other" in authors:
-        print(f"check author list: {author}")
+        print(f"check author list: {authors}")
     author_key = authors.split(",")[0]
     if "-" in author_key:
         author_key = author_key.split("-")[0].capitalize() + author_key.split("-")[1].capitalize()
-    if "mc" in author_key:
-        author_key = author_key.split("mc")[0].capitalize() + author_key.split("-")[1].capitalize()
+    if "mc" in author_key: ### check if this works properly
+        author_key = author_key.split("mc")[0].capitalize()
+    if " " in author_key:
+        author_key = author_key.split(" ")[-1].capitalize()
     author_key = re.sub(r"[^a-zA-Z0-9]", "", author_key)
     return author_key   
 
+
 def format_title(title):
-    new_title = title.title().replace("Ph ","pH ").replace("Ftir","FTIR").replace("Co2","CO2").replace("Mos2","MoS2")
+    new_title = titlecase(title) # title.title()
     print(new_title)
     return new_title
 
@@ -61,16 +72,16 @@ def format_new_article(entry_dict):
     for key in USE_KEYS[:-2]: 
         new_article += ",\n    " + key + " = {" + entry_dict[key] + "}"
     new_article += "}\n\n"
+    new_article = new_article.replace("Ph ","pH ").replace("Ph-","pH-").replace("Ftir","FTIR").replace("Co2","CO2").replace("Co ","CO ").replace("Mos2","MoS2").replace("Cstr","CSTR").replace("Bep","BEP").replace("Feiv=O","FeIV=O").replace("Br{\O}Nsted","Br{\o}nsted").replace("Tca","TCA").replace("Brenda","BRENDA").replace("Kcat","kcat").replace("Volcano'S", "Volcano's").replace(r"Th\'Eorie G\'En\'Erale De L'Action",r"Th\'eorie G\'en\'erale De L'Action").replace("Sabio-Rk", "Sabio-RK")#.replace("N{\o}rskov","N{\o}rskov")
     return new_article
 
-filename = "Publications.bib"
 with open(filename, "r", encoding = "UTF-8") as f:
     bib_data = f.read() 
 with open(filename.replace(".bib", "_bk.bib"), 'w') as f:
     f.write(bib_data)
 bib_data =bib_data.replace("\n", "")
 entries = bib_data.split("@")[1:]
-
+    
 ### ABBREVIATE Journal Names
 df = pd.read_csv('Journal_Abbreviations.csv', encoding = "UTF-8")
 df = df.fillna("")
@@ -100,19 +111,36 @@ for entry in entries:
             entry_dict["journal"] = entry_dict["abbrv"]
         if entry_dict["abbrv"] == entry_dict["fullname"]:
             entry_dict["fullname"] = restore_fullname(entry_dict["fullname"])
-        # print(dict)
         author_key = get_author_key(entry_dict["author"])
         entry_dict["bib_key"] = author_key + entry_dict["year"] + entry_dict["j_key"]
         entry_dict["title"] = format_title(entry_dict["title"])
         new_entry = format_new_article(entry_dict)
     else:
-        new_entry = "@" + entry + "}\n\n"
-        # print(new_entry)
+        new_entry = "@" + entry.replace(",  ",",\n  ")
+        title = new_entry.split(r"title={")[1].split(r"},")[0].strip()
+        print(title)
+        formatted_title = format_title(title)
+        new_entry = new_entry.replace(title, formatted_title)+"}}\n\n"
     new_bib_data += new_entry
-  
-                                   
+#%%          
 with open(filename, 'w', encoding = "UTF-8") as f:
     f.write(new_bib_data)        
 
+#%%
+"""
+Aarnling B\r{a}\r{a}th
+N\o{}rskov
+\`{o}	ò	grave accent
+\'{o}	ó
+\"{o}	ö
+\c{c}	ç
+\r{a}	å
+Henri1902CRHebdS\'eancesAcadSci
+Th\'Eorie G\'En\'Erale De L'Action
+"""
+
+
+# code needs to be updated
+# Search Br{\O}nsted--Evans--Polanyi in the title as n will be converted to N
 
 
