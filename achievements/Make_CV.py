@@ -68,6 +68,9 @@ def make_publication_list(bib):
         p.add_run(", ")
         p.add_run(year).bold = True
         p.add_run(", ")
+        if volume != "":
+            p.add_run(volume).italic = True
+            p.add_run(", ")
         if pages != "":
             p.add_run(pages)
         else: # it doesn't have pages
@@ -79,6 +82,7 @@ def make_publication_list(bib):
         if notes != "":
             comment = p.add_run(notes)
             comment.font.bold = True
+            comment.font.name = "Arial"
             # comment.font.underline = True
             comment.font.color.rgb = RGBColor.from_string("B10026")
             comment.add_break()
@@ -86,21 +90,21 @@ def make_publication_list(bib):
 
 months = ["","January","February","March","April","May","June","July","August","September","October","November","December"]
 def make_funding_list(funding_csv):
-    doc.add_heading("Funding", level=1)
+    doc.add_heading("Funding (Japanese Titles were Translated to English)", level=1)
     df = pd.read_csv(funding_csv)
     N = df.shape[0]
     for i in range(N):
         data = df.iloc[i]
         start,finish,title, name, source, PI, amount, unit = data[["Start","Finish","Title","PJ_Name","Funding_Source","PI","Amount","Unit"]]
         if PI == "PI":
-            PI = "(Principal Investigator)"
+            PI = "Principal Investigator"
         else:
-            PI = "(Co-Investigator)"    
+            PI = "Co-Investigator"    
         p = doc.add_paragraph(f"{i+1}.  ")
         p.add_run(f"{source} {name} ({PI})\n")
         p.add_run(" \"").bold = True
         p = add_formatted_title(p,title) 
-        p.add_run("\", ").bold = True
+        p.add_run("\" ").bold = True
         start = str(start)
         finish = str(finish)
         formatted_start = start[:4] + " " + months[int(start[4:])]
@@ -108,19 +112,17 @@ def make_funding_list(funding_csv):
         p.add_run(f"({formatted_start} - {formatted_finish}, {amount} yen)").add_break()
 
 def make_award_list(award_csv):
-    doc.add_heading("Awards", level=1)
+    doc.add_heading("Awards (Japanese Titles were Translated to English)", level=1)
     df = pd.read_csv(award_csv)
     N = df.shape[0]
     for i in range(N):
         data = df.iloc[i].astype(str)
         date,prize,origin,notes = data[["Date","Prize","From","Notes"]]
-        p = doc.add_paragraph("")
         date = str(date)
         date = f"{date[:4]}/{date[4:6]}/{date[6:]}"
         p = doc.add_paragraph(f"{i+1}.  ")
-        p.add_run(f"{prize},{origin} ({date})").add_break()
-        print(notes)
-        print(type(notes))
+        p.add_run(f"{prize}").bold = True
+        p.add_run(f", {origin} ({date}).").add_break()
         if notes !="nan":
             print(notes)
             comment = p.add_run(notes)
@@ -159,18 +161,18 @@ def make_presentation_list(presentation_csv):
     all_df = pd.read_csv(presentation_csv)
     doc.add_heading("Presentations (Japanese Titles were Translated to English)", level=1)
     for j,df in enumerate(format_list):
-        doc.add_heading(format_list[j] + " Presentations", level=2)
         df = all_df[all_df["Format"] == format_list[j]]
         df = df.sort_values(by = "Date", ascending = False)
         N = df.shape[0]
+        doc.add_heading(format_list[j] + " Presentations"+f" ({N})", level=2)
         for i in range(N):
             data = df.iloc[i].astype(str)
-            date,conference,venue,location,title,authors,format,notes = data[:8]
+            date,conference,venue,country_or_city,title,authors,format,notes = data[:8]
             formatted_date = format_date(date)
             p = doc.add_paragraph(f"{i+1}.  ")
             p = add_formatted_authors(p,authors)
             p.add_run(f' "{title}"').bold = True
-            p.add_run(f" {conference}, {venue} ({formatted_date}).").add_break()
+            p.add_run(f" {conference}, {venue}, {country_or_city} ({formatted_date}).").add_break()
             if notes !="nan":
                 comment = p.add_run(notes)
                 print(notes)
