@@ -1,6 +1,6 @@
 #%%
 import os
-page_list = ["index.html","about_me.html","research.html","publications.html","vacancies.html","blog.html","contact.html"]
+page_list = ["index.html","about_me.html","research.html","publications.html","vacancies.html","blog.html","contact.html","presentations.html","funding.html"]
 with open("html_template.html","r") as f:
     html_template = f.read()
 
@@ -8,21 +8,18 @@ import json
 json_open = open('contents/meta_info.json', 'r')
 meta_info = json.load(json_open)
 
-nav_template = "\t\t<li><a href=PAGE_URL>TITLE</a></li>\n"
-def make_nav(page):
-    nav = ""
-    for p in page_list:
-        nav += nav_template.replace("PAGE_URL",p).replace("TITLE",p.replace(".html","").title())
+def update_navbar(txt, lang):
     if lang == "":
-        target = page.replace(".html","_jp.html")
-        title = "Japanese"
+        other_lang = "_jp"
+        lang2_label = "Japanese"
     else:
-        target = page.replace("_jp.html",".html")
-        title = " English"
-        nav = nav.replace(".html","_jp.html")
-    nav += nav_template.replace("PAGE_URL",target).replace("TITLE",title)
-    nav = nav.replace("Index","Home").replace("About_Me","About Me")
-    return nav
+        other_lang = ""
+        lang2_label = "English"
+    txt = txt.replace("LANG2_LABEL",lang2_label).replace("_LANG2", other_lang)
+    txt = txt.replace("_LANG", lang)
+    current_page = page.replace(".html","")
+    txt = txt.replace("CURRENT_PAGE", current_page)
+    return txt
 
 def make_title(page):
     title = ""
@@ -40,16 +37,21 @@ def get_contents(page):
     try:
         with open(f"contents/{content_file}", "r") as f:
             contents = f.read()
-    except FileNotFoundError: # no Japanese file
-        contents = "No Japanese yet"
+    except FileNotFoundError:
+        with open(f"contents/construction_contents.html", "r") as f:
+            contents = f.read()
     return contents
 for page in page_list:
     for lang in ["","_jp"]:
+        output_html = html_template
+        output_html = update_navbar(output_html, lang)
+
+
         save_file_name = page.replace(".html",f"{lang}.html")
-        nav = make_nav(page)
+        
         contents = get_contents(page)
         title = make_title(page)
-        output_html = html_template.replace("NAV_BAR",nav).replace("CONTENTS",contents).replace("PAGE_TITLE",title)
+        output_html = output_html.replace("CONTENTS",contents).replace("PAGE_TITLE",title)
 
         with open(save_file_name, "w") as f:
             f.write(output_html)

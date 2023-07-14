@@ -40,41 +40,11 @@ a:active{color: #F48153;}
 img{border-style: none;}
 
 
-/*For all pages - nav*/
-#nav li{
-	display: inline;
-	list-style-type: none;
-	padding-right: 30px;
-}
-
-#nav{
-	margin: 0 0 5 0 ;
-	padding: 1px 30px 1px 30px;
-	background-color: #033453;
-}
-
-#nav li a:link{
-	color: #F7F9FB;
-	text-decoration: none;
-}
-#nav li a:visited{
-	color: #F7F9FB;
-	text-decoration: none;
-}
-#nav li a:hover{
-	color: #F48153;
-	text-decoration: none;
-}
-#nav li a:active{
-	color: #F48153; /* not sure what this is for*/
-	text-decoration: none;
-}
-
-#footer{
+.footer{
 		margin-top: 30px;
 		background-color: #033453;/* 5085A5*/
 }
-#footer p{
+.footer p{
 	color: #F7F9FB;
 	margin: 0 0 10 0 ;
 	padding: 1px 30px 1px 30px;
@@ -130,3 +100,105 @@ table.info th{
 	background-color: #F7F9FB;
 	color: #033453;
 }
+
+
+
+
+.navbar {
+	overflow: hidden;
+	font-family: Arial;
+	margin: 0 0 5 0;
+	padding: 1px 15px;
+	background-color: #033453;
+  }
+
+  
+/* Links inside the navbar */
+.navbar a {
+	float: left;
+	font-size: 16px;
+	color: white;
+	text-align: center;
+	padding: 0px 20px 10px;
+	text-decoration: none;
+  }
+  
+.navbar li{
+	display: inline;
+	list-style-type: none;
+	padding-right: 0px;
+}
+
+.navbar li ul {
+	position: absolute;
+	top: 100%;
+	display: block;
+	background-color: #033453;
+	padding: 0 0 0 0;
+	}
+
+.navbar li a:link{
+	color: #F7F9FB;
+	text-decoration: none;
+}
+
+.navbar li a:active{
+	color: #F48153; /* not sure what this is for*/
+	text-decoration: none;
+}
+.navbar li a:visited{
+	color: #F7F9FB;
+	text-decoration: none;
+}
+.navbar li a:hover{
+	color: #F48153;
+	text-decoration: none;	
+}
+
+  /* The dropdown container */
+  .dropdown {
+	float: left;
+	overflow: hidden;
+  }
+  
+  /* Dropdown button */
+  .dropdown .dropbtn {
+	font-size: 16px;
+	border: none;
+	outline: none;
+	color: white;
+	padding: 0px 20px;
+	background-color: inherit;
+	font-family: inherit; /* Important for vertical align on mobile phones */
+	margin: 0; /* Important for vertical align on mobile phones */
+  }
+    
+.dropdown-content {
+	display: none;
+	position: absolute;
+	background-color: #f9f9f9;
+	min-width: 1600px;
+	box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+	z-index: 1;
+  }
+  
+  /* Links inside the dropdown */
+  .dropdown-content a {
+	float: none;
+	color: black;
+	padding: 12px 16px;
+	text-decoration: none;
+	display: block;
+	text-align: left;
+  }
+  
+  /* Add a grey background color to dropdown links on hover */
+  .dropdown-content a:hover {
+	background-color: #ddd;
+  }
+  
+  /* Show the dropdown menu on hover */
+  .dropdown:hover .dropdown-content {
+	display: block;
+  }
+
