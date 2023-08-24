@@ -67,7 +67,7 @@ out_html_jp = translate(out_html)
 
 with open("../contents/publications_contents.html", 'w') as f:
     f.write(out_html)    
-with open("../contents/publications_jp_contents.html", 'w') as f:
+with open("../contents/publications_jp_contents.html", 'w', encoding = "utf-8") as f:
     f.write(out_html_jp)        
 
 
