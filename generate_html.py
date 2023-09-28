@@ -1,5 +1,7 @@
 #%%
 import os
+import datetime
+today = datetime.date.today().strftime('%Y/%m/%d')
 page_list = ["index.html","about_me.html","research.html","publications.html","vacancies.html","blog.html","contact.html","presentations.html","funding.html"]
 with open("html_template.html","r") as f:
     html_template = f.read()
@@ -34,8 +36,9 @@ def make_title(page):
 
 def get_contents(page):
     content_file = page.replace(".html",f"{lang}_contents.html")
+    print(content_file)
     try:
-        with open(f"contents/{content_file}", "r") as f:
+        with open(f"contents/{content_file}", "r",encoding="utf-8") as f:
             contents = f.read()
     except FileNotFoundError:
         with open(f"contents/construction_contents.html", "r") as f:
@@ -51,7 +54,7 @@ for page in page_list:
         
         contents = get_contents(page)
         title = make_title(page)
-        output_html = output_html.replace("CONTENTS",contents).replace("PAGE_TITLE",title)
+        output_html = output_html.replace("CONTENTS",contents).replace("PAGE_TITLE",title).replace("TODAY",today)
 
-        with open(save_file_name, "w") as f:
+        with open(save_file_name, "w", encoding="utf-8") as f:
             f.write(output_html)
