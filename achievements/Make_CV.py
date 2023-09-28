@@ -1,12 +1,62 @@
 #%%
 import pandas as pd
 import numpy as np
+import bibtexparser
 from docx import Document
 from docx.shared import RGBColor
-LANG = 0 # English:0 or Japanese:1
 # date 20171101 for the CSRS Interim report might be off
 # from docx.shared import Pt
 # search Km and $ and { for TeX
+
+def bib2df(bib_file, sort = True):
+    with open(bib_file) as f:
+        bib = bibtexparser.load(f)
+    df = pd.DataFrame(bib.entries)    
+    cols = ["ID", "author","journal","year","volume","pages", "doi", "notes", "ENTRYTYPE"]
+    missing_cols = [item for item in df.columns if item not in cols]
+    cols += missing_cols
+    df = df[cols].sort_values(by=["year"], ascending = False)   
+    df = df.fillna("")
+    num_publications =df.shape[0]
+    corresponding_authors = df.author.str.contains("Ooka\*").sum()
+    first_authors = df.ID.str.contains("Ooka").sum()
+    print(num_publications, corresponding_authors, first_authors)
+    return df
+
+def write_entry(i, entry): # need to write the df to 
+    ID, authors, journal, year, volume, pages, doi, notes, ENTRYTYPE, type, title, fullname, abbrv, status = entry
+    authors = sort(authors)
+    print(notes,doi,status)
+    p = doc.add_paragraph(f"{i+1}.  ")
+    ### Authors:
+    p = add_formatted_authors(p,authors)
+    p.add_run(" \"").bold = True
+    p = add_formatted_title(p,title) 
+    p.add_run("\" ").bold = True
+    p.add_run(journal).italic = True
+    p.add_run(", ")
+    p.add_run(year).bold = True
+    p.add_run(", ")
+    if volume != "":
+        p.add_run(volume).italic = True
+        p.add_run(", ")
+    if pages != "":
+        p.add_run(pages)
+    else: # it doesn't have pages
+        p.add_run(doi) # it must have doi
+        p.add_run(" (")
+        p.add_run(status).italic = True
+        p.add_run(")")
+    p.add_run(".").add_break()
+    if notes != "":
+        comment = p.add_run(notes)
+        comment.font.bold = True
+        comment.font.name = "Arial"
+        # comment.font.underline = True
+        comment.font.color.rgb = RGBColor.from_string("B10026")
+        comment.add_break()
+
+
 
 def sort(authors):
     sorted_authors = ""
@@ -33,59 +83,23 @@ def add_formatted_authors(p,authors):
     me.font.bold = True
     p.add_run(after)
     return p
-def make_publication_list(bib):
-    doc.add_heading("Academic Publications (All Peer Reviewed)", level=1) # reorder if original/reviews need to be separated?
-    with open(bib, encoding = "UTF-8") as f:
-        bib_data = f.read().replace("\n", "") # leave doi and other information in the bib data. comments might be beneficial for biorxiv and books.
-    bib_data = bib_data.replace("XXX","")        
-    entries = bib_data.split("@")[1:]
-    num_publications =len(entries)
-    corresponding_authors = str(bib_data.count("Ooka*"))
-    first_authors = str(bib_data.count("@article{Ooka"))
-    for i, entry in enumerate(entries):
-        entry = entry.split("}}")[0]
-        authors = entry.split("author = {")[1].split("},")[0]
-        authors = sort(authors)
-        journal = entry.split("journal = {")[1].split("},   ")[0]
-        year = entry.split("year = {")[1].split("},   ")[0]
-        volume = entry.split("volume = {")[1].split("},   ")[0]
-        pages = entry.split("pages = {")[1].split("},   ")[0].replace("--","-")
-        title = entry.split("title = {")[1].split("},   ")[0]
-        notes,doi,status ="","",""
-        if "notes" in entry:
-            notes = entry.split("notes = {")[1].split("},   ")[0]
-        if "doi" in entry:
-            doi = entry.split("doi = {")[1].split("},")[0]
-        if "status" in entry:            
-            status = entry.split("status = {")[1].split("},")[0]
-        p = doc.add_paragraph(f"{i+1}.  ")
-        ### Authors:
-        p = add_formatted_authors(p,authors)
-        p.add_run(" \"").bold = True
-        p = add_formatted_title(p,title) 
-        p.add_run("\" ").bold = True
-        p.add_run(journal).italic = True
-        p.add_run(", ")
-        p.add_run(year).bold = True
-        p.add_run(", ")
-        if volume != "":
-            p.add_run(volume).italic = True
-            p.add_run(", ")
-        if pages != "":
-            p.add_run(pages)
-        else: # it doesn't have pages
-            p.add_run(doi) # it must have doi
-            p.add_run(" (")
-            p.add_run(status).italic = True
-            p.add_run(")")
-        p.add_run(".").add_break()
-        if notes != "":
-            comment = p.add_run(notes)
-            comment.font.bold = True
-            comment.font.name = "Arial"
-            # comment.font.underline = True
-            comment.font.color.rgb = RGBColor.from_string("B10026")
-            comment.add_break()
+
+def make_publication_list(bib_file, separate_reviews = False):
+    if LANG == "ENG":
+        doc.add_heading("Academic Publications (All Peer Reviewed)", level=1)
+    else:
+        doc.add_heading("学術論文 (査読あり)", level=1)
+    df = bib2df(bib_file)
+    N = df.shape[0]
+    if separate_reviews == False:
+        for i in range(N):
+            entry = df.iloc[i]
+            write_entry(i, entry)
+    else:
+        pass
+
+
+
 
 
 months = ["","January","February","March","April","May","June","July","August","September","October","November","December"]
@@ -156,7 +170,6 @@ def format_date(date,n=8): # change format if n < 8
 def make_press_list(press_csv):
     pass ##########
 def make_presentation_list(presentation_csv):
-    
     format_list = ["Invited","Oral","Poster"]
     all_df = pd.read_csv(presentation_csv)
     doc.add_heading("Presentations (Japanese Titles were Translated to English)", level=1)
@@ -180,6 +193,11 @@ def make_presentation_list(presentation_csv):
                 # comment.font.underline = True
                 comment.font.color.rgb = RGBColor.from_string("B10026")
                 comment.add_break()
+
+
+
+LANG = "JP"
+LANG = "ENG"
 doc = Document("Publication_List_Template.docx")
 # items = ["Heading", "Publications", "Presentations","Patents","Press","Funding","Awards"]
 # for item in items:
@@ -198,4 +216,49 @@ make_award_list("Awards.csv")
 
 doc.save("2_Publication_list.docx")
 
-# %%
+#%%
+ 
+def write_entry(i, entry):  # directly from bib file
+    entry = entry.split("}}")[0]
+    authors = entry.split("author = {")[1].split("},")[0]
+    authors = sort(authors)
+    journal = entry.split("journal = {")[1].split("},   ")[0]
+    year = entry.split("year = {")[1].split("},   ")[0]
+    volume = entry.split("volume = {")[1].split("},   ")[0]
+    pages = entry.split("pages = {")[1].split("},   ")[0].replace("--","-")
+    title = entry.split("title = {")[1].split("},   ")[0]
+    notes,doi,status ="","",""
+    if "notes" in entry:
+        notes = entry.split("notes = {")[1].split("},   ")[0]
+    if "doi" in entry:
+        doi = entry.split("doi = {")[1].split("},")[0]
+    if "status" in entry:            
+        status = entry.split("status = {")[1].split("},")[0]
+    p = doc.add_paragraph(f"{i+1}.  ")
+    ### Authors:
+    p = add_formatted_authors(p,authors)
+    p.add_run(" \"").bold = True
+    p = add_formatted_title(p,title) 
+    p.add_run("\" ").bold = True
+    p.add_run(journal).italic = True
+    p.add_run(", ")
+    p.add_run(year).bold = True
+    p.add_run(", ")
+    if volume != "":
+        p.add_run(volume).italic = True
+        p.add_run(", ")
+    if pages != "":
+        p.add_run(pages)
+    else: # it doesn't have pages
+        p.add_run(doi) # it must have doi
+        p.add_run(" (")
+        p.add_run(status).italic = True
+        p.add_run(")")
+    p.add_run(".").add_break()
+    if notes != "":
+        comment = p.add_run(notes)
+        comment.font.bold = True
+        comment.font.name = "Arial"
+        # comment.font.underline = True
+        comment.font.color.rgb = RGBColor.from_string("B10026")
+        comment.add_break()
