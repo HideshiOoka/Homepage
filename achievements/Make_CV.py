@@ -23,7 +23,7 @@ def bib2df(bib_file, sort = True):
     print(num_publications, corresponding_authors, first_authors)
     return df
 
-def write_entry(i, entry): # need to write the df to 
+def write_entry(i, entry): # need to write the df 
     ID, authors, journal, year, volume, pages, doi, notes, ENTRYTYPE, type, title, fullname, abbrv, status = entry
     authors = sort(authors)
     print(notes,doi,status)
@@ -49,14 +49,14 @@ def write_entry(i, entry): # need to write the df to
         p.add_run(")")
     p.add_run(".").add_break()
     if notes != "":
+        if LANG == "_JP":
+            notes = notes.replace("Representative Paper", "代表論文")
         comment = p.add_run(notes)
         comment.font.bold = True
         comment.font.name = "Arial"
         # comment.font.underline = True
         comment.font.color.rgb = RGBColor.from_string("B10026")
         comment.add_break()
-
-
 
 def sort(authors):
     sorted_authors = ""
@@ -76,19 +76,26 @@ def add_formatted_title(p,title):
         return p
 
 def add_formatted_authors(p,authors):
-    before, after = authors.split("Hideshi Ooka")
+    my_name = "Hideshi Ooka"
+    try:
+        before, after = authors.split(my_name)
+    except ValueError:
+        if LANG == "_JP":
+            my_name = "大岡英史"
+            before, after = authors.split(my_name)
     p.add_run(before)
-    me = p.add_run("Hideshi Ooka")
+    me = p.add_run(my_name)
     me.font.underline = True
     me.font.bold = True
     p.add_run(after)
     return p
 
 def make_publication_list(bib_file, separate_reviews = False):
-    if LANG == "ENG":
-        doc.add_heading("Academic Publications (All Peer Reviewed)", level=1)
-    else:
-        doc.add_heading("学術論文 (査読あり)", level=1)
+    header = "Academic Publications (All Peer Reviewed)"
+    if LANG == "_JP":
+        header = "学術論文 (査読あり)"
+    doc.add_heading(header, level=1)
+    
     df = bib2df(bib_file)
     N = df.shape[0]
     if separate_reviews == False:
@@ -98,22 +105,33 @@ def make_publication_list(bib_file, separate_reviews = False):
     else:
         pass
 
-
-
-
+def format_date(date,n=8): # change format if n < 8
+    date = str(date)
+    formatted_date = date[:4]+"/"+date[4:6]+"/"+date[6:8]
+    formatted_date = formatted_date.replace("X","")
+    return formatted_date
 
 months = ["","January","February","March","April","May","June","July","August","September","October","November","December"]
 def make_funding_list(funding_csv):
-    doc.add_heading("Funding (Japanese Titles were Translated to English)", level=1)
+    header = "Funding (Japanese Titles were Translated to English)"
+    PI_text = "Principal Investigator"
+    Co_PI_text = "Co-Investigator"
+    unit = "yen"
+    if LANG == "_JP":
+        header = "外部資金獲得実績"
+        PI_text = "研究代表者"
+        Co_PI_text = "研究分担者"
+        unit = "円"
+    doc.add_heading(header, level=1)
     df = pd.read_csv(funding_csv)
     N = df.shape[0]
     for i in range(N):
         data = df.iloc[i]
         start,finish,title, name, source, PI, amount, unit = data[["Start","Finish","Title","PJ_Name","Funding_Source","PI","Amount","Unit"]]
         if PI == "PI":
-            PI = "Principal Investigator"
+            PI = PI_text
         else:
-            PI = "Co-Investigator"    
+            PI = Co_PI_text
         p = doc.add_paragraph(f"{i+1}.  ")
         p.add_run(f"{source} {name} ({PI})\n")
         p.add_run(" \"").bold = True
@@ -123,10 +141,13 @@ def make_funding_list(funding_csv):
         finish = str(finish)
         formatted_start = start[:4] + " " + months[int(start[4:])]
         formatted_finish = finish[:4] + " " +months[int(finish[4:])]
-        p.add_run(f"({formatted_start} - {formatted_finish}, {amount} yen)").add_break()
+        p.add_run(f"({formatted_start} - {formatted_finish}, {amount} {unit})").add_break()
 
 def make_award_list(award_csv):
-    doc.add_heading("Awards (Japanese Titles were Translated to English)", level=1)
+    header = "Awards (Japanese Titles were Translated to English)"
+    if LANG == "_JP":
+        header = "受賞歴"
+    doc.add_heading(header, level=1)
     df = pd.read_csv(award_csv)
     N = df.shape[0]
     for i in range(N):
@@ -146,7 +167,10 @@ def make_award_list(award_csv):
             comment.add_break()
 
 def make_patent_list(patent_csv):
-    doc.add_heading("Patents", level=1)
+    header = "Patents"
+    if LANG == "_JP":
+        header = "知財・特許"
+    doc.add_heading(header, level=1)
     df = pd.read_csv(patent_csv)
     N = df.shape[0]
     for i in range(N):
@@ -161,23 +185,26 @@ def make_patent_list(patent_csv):
         p.add_run("\", ")
         p.add_run(f"{ID} ({status}).").add_break()
 
-def format_date(date,n=8): # change format if n < 8
-    date = str(date)
-    formatted_date = date[:4]+"/"+date[4:6]+"/"+date[6:8]
-    formatted_date = formatted_date.replace("X","")
-    return formatted_date
+
 
 def make_press_list(press_csv):
     pass ##########
 def make_presentation_list(presentation_csv):
+    header = "Presentations (Japanese Titles were Translated to English)"
+    if LANG == "_JP":
+        header = "学会発表"
+    doc.add_heading(header, level=1)
     format_list = ["Invited","Oral","Poster"]
+    format_list_JP = ["【招待講演】","【口頭発表】","【ポスター発表】"]
     all_df = pd.read_csv(presentation_csv)
-    doc.add_heading("Presentations (Japanese Titles were Translated to English)", level=1)
     for j,df in enumerate(format_list):
         df = all_df[all_df["Format"] == format_list[j]]
         df = df.sort_values(by = "Date", ascending = False)
         N = df.shape[0]
-        doc.add_heading(format_list[j] + " Presentations"+f" ({N})", level=2)
+        sub_header = format_list[j] + " Presentations"+f" ({N})"
+        if LANG == "_JP":
+            sub_header = format_list_JP[j]
+        doc.add_heading(sub_header, level=2)
         for i in range(N):
             data = df.iloc[i].astype(str)
             date,conference,venue,country_or_city,title,authors,format,notes = data[:8]
@@ -196,25 +223,25 @@ def make_presentation_list(presentation_csv):
 
 
 
-LANG = "JP"
-LANG = "ENG"
 doc = Document("Publication_List_Template.docx")
 # items = ["Heading", "Publications", "Presentations","Patents","Press","Funding","Awards"]
 # for item in items:
 #     doc.add_paragraph(item,style = "Heading 1")
 
 
-    
+LANG = "" # English    
+LANG = "_JP" # Japanese
 
-make_publication_list("Publications.bib")
-make_presentation_list("Presentations.csv")
-make_funding_list("Funding.csv")
-make_patent_list("Patents.csv")
-make_award_list("Awards.csv")
+
+
+make_publication_list(f"Publications.bib")
+make_presentation_list(f"Presentations{LANG}.csv")
+make_funding_list(f"Funding{LANG}.csv")
+make_patent_list(f"Patents{LANG}.csv")
+make_award_list(f"Awards{LANG}.csv")
 # make_others_list("Others.csv")
 # make_press_list("Press.csv")
-
-doc.save("2_Publication_list.docx")
+doc.save(f"Publication_list{LANG}.docx")
 
 #%%
  
