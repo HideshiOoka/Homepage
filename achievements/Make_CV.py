@@ -98,12 +98,16 @@ def make_publication_list(bib_file, separate_reviews = False):
     
     df = bib2df(bib_file)
     N = df.shape[0]
-    if separate_reviews == False:
-        for i in range(N):
-            entry = df.iloc[i]
-            write_entry(i, entry)
-    else:
-        pass
+    num_original = 0
+    if separate_reviews == True:
+        df = df.sort_values(by = ["type","year"], ascending = [True, False])
+        num_original = df[df["type"]=="original"].shape[0]
+        doc.add_paragraph(f"{num_original}")
+    for i in range(N):
+        entry = df.iloc[i]
+        write_entry(i, entry)
+        
+
 
 def format_date(date,n=8): # change format if n < 8
     date = str(date)
@@ -234,7 +238,7 @@ LANG = "_JP" # Japanese
 
 
 
-make_publication_list(f"Publications.bib")
+make_publication_list(f"Publications.bib", separate_reviews=True)
 make_presentation_list(f"Presentations{LANG}.csv")
 make_funding_list(f"Funding{LANG}.csv")
 make_patent_list(f"Patents{LANG}.csv")
@@ -242,50 +246,3 @@ make_award_list(f"Awards{LANG}.csv")
 # make_others_list("Others.csv")
 # make_press_list("Press.csv")
 doc.save(f"Publication_list{LANG}.docx")
-
-#%%
- 
-def write_entry(i, entry):  # directly from bib file
-    entry = entry.split("}}")[0]
-    authors = entry.split("author = {")[1].split("},")[0]
-    authors = sort(authors)
-    journal = entry.split("journal = {")[1].split("},   ")[0]
-    year = entry.split("year = {")[1].split("},   ")[0]
-    volume = entry.split("volume = {")[1].split("},   ")[0]
-    pages = entry.split("pages = {")[1].split("},   ")[0].replace("--","-")
-    title = entry.split("title = {")[1].split("},   ")[0]
-    notes,doi,status ="","",""
-    if "notes" in entry:
-        notes = entry.split("notes = {")[1].split("},   ")[0]
-    if "doi" in entry:
-        doi = entry.split("doi = {")[1].split("},")[0]
-    if "status" in entry:            
-        status = entry.split("status = {")[1].split("},")[0]
-    p = doc.add_paragraph(f"{i+1}.  ")
-    ### Authors:
-    p = add_formatted_authors(p,authors)
-    p.add_run(" \"").bold = True
-    p = add_formatted_title(p,title) 
-    p.add_run("\" ").bold = True
-    p.add_run(journal).italic = True
-    p.add_run(", ")
-    p.add_run(year).bold = True
-    p.add_run(", ")
-    if volume != "":
-        p.add_run(volume).italic = True
-        p.add_run(", ")
-    if pages != "":
-        p.add_run(pages)
-    else: # it doesn't have pages
-        p.add_run(doi) # it must have doi
-        p.add_run(" (")
-        p.add_run(status).italic = True
-        p.add_run(")")
-    p.add_run(".").add_break()
-    if notes != "":
-        comment = p.add_run(notes)
-        comment.font.bold = True
-        comment.font.name = "Arial"
-        # comment.font.underline = True
-        comment.font.color.rgb = RGBColor.from_string("B10026")
-        comment.add_break()
