@@ -30,16 +30,16 @@ def write_entry(i, entry): # need to write the df
     p = doc.add_paragraph(f"{i+1}.  ")
     ### Authors:
     p = add_formatted_authors(p,authors)
+    p.add_run(":") #################
     p.add_run(" \"").bold = True
     p = add_formatted_title(p,title) 
     p.add_run("\" ").bold = True
     p.add_run(journal).italic = True
     p.add_run(", ")
-    p.add_run(year).bold = True
-    p.add_run(", ")
-    if volume != "":
-        p.add_run(volume).italic = True
-        p.add_run(", ")
+    p.add_run(volume)
+    p.add_run(", (")
+    p.add_run(year)
+    p.add_run("), ")
     if pages != "":
         p.add_run(pages)
     else: # it doesn't have pages
@@ -246,3 +246,42 @@ make_award_list(f"Awards{LANG}.csv")
 # make_others_list("Others.csv")
 # make_press_list("Press.csv")
 doc.save(f"Publication_list{LANG}.docx")
+
+
+"""
+standard write_entry
+def write_entry(i, entry): # need to write the df 
+    ID, authors, journal, year, volume, pages, doi, notes, ENTRYTYPE, type, title, fullname, abbrv, status = entry
+    authors = sort(authors)
+    print(notes,doi,status)
+    p = doc.add_paragraph(f"{i+1}.  ")
+    ### Authors:
+    p = add_formatted_authors(p,authors)
+    p.add_run(" \"").bold = True
+    p = add_formatted_title(p,title) 
+    p.add_run("\" ").bold = True
+    p.add_run(journal).italic = True
+    p.add_run(", ")
+    p.add_run(year).bold = True
+    p.add_run(", ")
+    if volume != "":
+        p.add_run(volume).italic = True
+        p.add_run(", ")
+    if pages != "":
+        p.add_run(pages)
+    else: # it doesn't have pages
+        p.add_run(doi) # it must have doi
+        p.add_run(" (")
+        p.add_run(status).italic = True
+        p.add_run(")")
+    p.add_run(".").add_break()
+    if notes != "":
+        if LANG == "_JP":
+            notes = notes.replace("Representative Paper", "代表論文")
+        comment = p.add_run(notes)
+        comment.font.bold = True
+        comment.font.name = "Arial"
+        # comment.font.underline = True
+        comment.font.color.rgb = RGBColor.from_string("B10026")
+        comment.add_break()
+"""
