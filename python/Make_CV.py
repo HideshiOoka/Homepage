@@ -21,8 +21,10 @@ def bib2df(bib_file, sort = True):
     corresponding_authors = df.author.str.contains("Ooka\*").sum()
     first_authors = df.ID.str.contains("Ooka").sum()
     print(num_publications, corresponding_authors, first_authors)
+    df.to_csv("../achievements/Publications.csv")
     return df
 
+#%%
 def write_entry(i, entry): # need to write the df 
     ID, authors, journal, year, volume, pages, doi, notes, ENTRYTYPE, type, title, fullname, abbrv, status = entry
     authors = sort(authors)

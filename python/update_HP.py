@@ -30,18 +30,18 @@ def get_contents(page):
     content_file = page.replace(".html",f"{lang}_contents.html")
     print(content_file)
     try:
-        with open(f"contents/{content_file}", "r",encoding="utf-8") as f:
+        with open(f"../contents/{content_file}", "r",encoding="utf-8") as f:
             contents = f.read()
     except FileNotFoundError:
-        with open(f"contents/construction_contents.html", "r") as f:
+        with open(f"../contents/construction_contents.html", "r") as f:
             contents = f.read()
     return contents
 
 today = datetime.date.today().strftime('%Y/%m/%d')
 page_list = ["index.html","about_me.html","research.html","publications.html","vacancies.html","blog.html","contact.html","presentations.html","funding.html","patents.html","awards.html"]
-with open("html_template.html","r") as f:
+with open("../templates/html_template.html","r") as f:
     html_template = f.read()
-json_open = open('contents/meta_info.json', 'r')
+json_open = open('../contents/meta_info.json', 'r')
 meta_info = json.load(json_open)
 
 for page in page_list:
@@ -49,6 +49,7 @@ for page in page_list:
         output_html = html_template
         output_html = update_navbar(output_html, lang)
         save_file_name = page.replace(".html",f"{lang}.html")
+        save_file_name = f"../{save_file_name}"
         contents = get_contents(page)
         title = make_title(page)
         output_html = output_html.replace("CONTENTS",contents).replace("PAGE_TITLE",title).replace("TODAY",today)
