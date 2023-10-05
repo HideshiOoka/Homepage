@@ -1,4 +1,0 @@
-add blog article about TD
-add Japanese using JS
-Presentation list
-add RIKEN link
