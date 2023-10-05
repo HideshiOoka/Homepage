@@ -10,7 +10,7 @@ format_list = ["Invited","Oral","Poster"]
 all_df = pd.read_csv("Presentations.csv")
 
 
-for LANG in ["","_jp"]:
+for LANG in ["","_JP"]:
     out_html = "<h1>Presentations</h1>"
     for j,format in enumerate(format_list):
         df = all_df[all_df["Format"] == format_list[j]]
