@@ -2,7 +2,8 @@
 import os
 import datetime
 today = datetime.date.today().strftime('%Y/%m/%d')
-page_list = ["index.html","about_me.html","research.html","publications.html","vacancies.html","blog.html","contact.html","presentations.html","funding.html"]
+page_list = ["index.html","about_me.html","research.html","publications.html","vacancies.html","blog.html","contact.html","presentations.html","funding.html","patents.html","awards.html"]
+
 with open("html_template.html","r") as f:
     html_template = f.read()
 
@@ -12,7 +13,7 @@ meta_info = json.load(json_open)
 
 def update_navbar(txt, lang):
     if lang == "":
-        other_lang = "_jp"
+        other_lang = "_JP"
         lang2_label = "Japanese"
     else:
         other_lang = ""
@@ -45,7 +46,7 @@ def get_contents(page):
             contents = f.read()
     return contents
 for page in page_list:
-    for lang in ["","_jp"]:
+    for lang in ["","_JP"]:
         output_html = html_template
         output_html = update_navbar(output_html, lang)
 
