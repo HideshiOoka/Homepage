@@ -74,10 +74,10 @@ for LANG in ["","_JP"]:
         title, authors, journal, year, volume, pages, URL, type, date, doi, notes = data
         title = format_title(title)
         authors = format_authors(authors)
-        if volume != "": # it has "proper" bibliography information:
+        if pages != "": # it has "proper" bibliography information:
             out_html += f"\t\t<li>{authors} \"{title}\", <i>{journal}</i>, <b>{year}</b>, <i>{volume}</i>, {pages}.<br>\n\n"
-        if volume == "": # it must have a URL
-            out_html += f"\t\t<li>{authors} \"{title}\" (<a href={URL}>URL</a>).<br>\n\n"
+        if pages == "": # it must have a URL
+            out_html += f"\t\t<li>{authors} \"{title}\", <i>{journal}</i> (<a href={URL}>URL</a>).<br>\n\n"
     out_html += "\t</ol>\n\n"
 
 
