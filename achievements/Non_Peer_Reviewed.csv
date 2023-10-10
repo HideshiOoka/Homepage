@@ -1,3 +1,4 @@
-﻿Date,Title,Classification,URL
-20220722,Theory Towards Catalyst Development,Article,http://www.canapple.com/doc/newsletter/news_238.pdf
-20210715,Exploring Catalyst Theory using Experiments, Mathematics, and Machine Learning,Interview,https://www.chem-station.com/blog/2021/07/mla.html
+﻿Title,Author,Journal,Year,Volume,Pages,URL,Type,Date,doi,Notes
+Theory Towards Catalyst Development,"Ooka, Hideshi",,2022,,,http://www.canapple.com/doc/newsletter/news_238.pdf,Article,20220722,,
+Exploring Catalyst Theory using Experiments; Mathematics; and Machine Learning,"Ooka, Hideshi",,2021,,,https://www.chem-station.com/blog/2021/07/mla.html,Interview,20210715,,
+Element Strategy for Water Splitting Catalysis," Ooka, Hideshi and Yamaguchi, Akira and Hashimoto, Kazuhito and Nakamura, Ryuhei",Chemical Industry: Special Issue on Advancements in Artificial Photosynthesis,2014,65,15--20,,Review,20140000,,

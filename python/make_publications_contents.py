@@ -5,6 +5,8 @@ translate_dict = {"Scientific Publications":"論文",
                   "First Author":"筆頭著者",
                   "Last Author":"最終著者",
                   "Patents":"知財・特許"}    
+def format_title(title):
+    return title.replace(";",",")
 
 def format_date(date,n=8): # change format if n < 8
     date = str(date)
@@ -14,12 +16,15 @@ def format_date(date,n=8): # change format if n < 8
 
 
 def format_authors(authors):
-    formatted_authors = ""
+    sorted_authors = ""
     for a in authors.split(" and "):
-        last,first  = a.split(", ")
-        formatted_authors += first + " " + last + ", "
-    formatted_authors = formatted_authors[:-2]        
-    return formatted_authors
+        try:
+            last,first  = a.split(", ")
+            sorted_authors += first + " " + last + ", "
+        except ValueError:
+            sorted_authors += a + ", "
+    sorted_authors = sorted_authors[:-2]        
+    return sorted_authors
 
 def translate(txt):
     for k,v in translate_dict.items():
@@ -28,6 +33,7 @@ def translate(txt):
     return txt   
 
 for LANG in ["","_JP"]:
+    #### Main Articles #####
     df = pd.read_csv(f"../achievements/Publications.csv", index_col = 0) # {LANG}
     df = df.sort_values(by = ["type","year"], ascending = [True, False]).fillna("")
     N = df.shape[0]
@@ -56,10 +62,27 @@ for LANG in ["","_JP"]:
         if i == num_original-1:
             out_html += "\t</ol>\n\n"
             out_html += f"<h2>Review Articles</h2><ol>\n"
-            
+    out_html += "\t</ol>\n\n"
+
+    #### Other Articles (Non Peer Reviewed) #####
+    out_html += f"<h2>Other Articles (Non Peer Reviewed)</h2><ol>\n"
+    df = pd.read_csv(f"../achievements/Non_Peer_Reviewed{LANG}.csv")
+    df = df.sort_values(by = ["Date"], ascending = [False]).fillna("")
+    N = df.shape[0]
+    for i in range(N):
+        data = df.iloc[i].astype(str)
+        title, authors, journal, year, volume, pages, URL, type, date, doi, notes = data
+        title = format_title(title)
+        authors = format_authors(authors)
+        if volume != "": # it has "proper" bibliography information:
+            out_html += f"\t\t<li>{authors} \"{title}\", <i>{journal}</i>, <b>{year}</b>, <i>{volume}</i>, {pages}.<br>\n\n"
+        if volume == "": # it must have a URL
+            out_html += f"\t\t<li>{authors} \"{title}\" (<a href={URL}>URL</a>).<br>\n\n"
+    out_html += "\t</ol>\n\n"
+
+
 
     out_html = out_html.replace("MoS$_2$", "MoS<sub>2</sub>").replace("CO$_2$", "CO<sub>2</sub>").replace("{\`e}","&egrave").replace("MnO$_2$", "MnO<sub>2</sub>")
-    out_html += "\t</ol>\n\n"
     if LANG == "_JP":
         out_html = translate(out_html)
     with open(f"../contents/publications{LANG}_contents.html", "w", encoding="utf-8") as f:
