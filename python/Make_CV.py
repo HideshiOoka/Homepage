@@ -3,11 +3,9 @@ import pandas as pd
 import numpy as np
 from docx import Document
 from docx.shared import RGBColor
+import re
 # date 20171101 for the CSRS Interim report might be off
-# search Km and $ and { for TeX
-
-
-
+#%%
 def sort(authors):
     sorted_authors = ""
     for a in authors.split(" and "):
@@ -16,49 +14,22 @@ def sort(authors):
     sorted_authors = sorted_authors[:-2]        
     return sorted_authors
 
-def write_entry(i, entry): # need to write the df 
-    ID, authors, journal, year, volume, pages, doi, notes, ENTRYTYPE, type, title, fullname, abbrv, status = entry
-    authors = sort(authors)
-    print(notes,doi,status)
-    p = doc.add_paragraph(f"{i+1}.  ")
-    ### Authors:
-    p = add_formatted_authors(p,authors)
-    p.add_run(":") #################
-    p.add_run(" \"").bold = True
-    p = add_formatted_title(p,title) 
-    p.add_run("\" ").bold = True
-    p.add_run(journal).italic = True
-    p.add_run(", ")
-    p.add_run(volume)
-    p.add_run(", (")
-    p.add_run(year)
-    p.add_run("), ")
-    if pages != "":
-        p.add_run(pages)
-    else: # it doesn't have pages
-        p.add_run(doi) # it must have doi
-        p.add_run(" (")
-        p.add_run(status).italic = True
-        p.add_run(")")
-    p.add_run(".").add_break()
-    if notes != "":
-        if LANG == "_JP":
-            notes = notes.replace("Representative Paper", "代表論文")
-        comment = p.add_run(notes)
-        comment.font.bold = True
-        comment.font.name = "Arial"
-        # comment.font.underline = True
-        comment.font.color.rgb = RGBColor.from_string("B10026")
-        comment.add_break()
-
 def add_formatted_title(p,title):  
     title = title.replace("--","-")   # -- in SPET
-    if "CO" not in p.text and "MoS2" not in p.text:
+    if "$_" not in title: # no subscripts
         p.add_run(title).bold = True
         return p
-    else:
-        # break the runs? or do something?# # CO2, MoS2        
-        p.add_run(title).bold = True # need some kind of formatting
+    else: 
+        substrings = title.split(r"$_")
+        for substring in substrings:
+            if "$" in substring:
+                subscript, upright = substring.split("$")
+            else:
+                subscript, upright = "", substring
+            sub_text = p.add_run(subscript)
+            sub_text.font.subscript = True
+            sub_text.font.bold = True
+            p.add_run(upright).bold = True
         return p
 
 def add_formatted_authors(p,authors):
@@ -76,19 +47,52 @@ def add_formatted_authors(p,authors):
     p.add_run(after)
     return p
 
-def make_publication_list(bib_file, separate_reviews = False):
+def write_entry(i, entry): # need to write the df 
+    ID, authors, journal, year, volume, pages, doi, notes, ENTRYTYPE, type, title, fullname, abbrv, status = entry
+    authors = sort(authors)
+    p = doc.add_paragraph(f"{i+1}.  ")
+    ### Authors:
+    p = add_formatted_authors(p,authors)
+    p.add_run(" \"").bold = True
+    p = add_formatted_title(p,title) 
+    p.add_run("\" ").bold = True
+    p.add_run(journal).italic = True
+    p.add_run(", ")
+    p.add_run(year).bold = True
+    p.add_run(", ")
+    if pages != "":
+        p.add_run(volume).italic = True
+        p.add_run(", ")
+        p.add_run(pages)
+    else: # it doesn't have pages
+        p.add_run(doi) # it must have doi
+        p.add_run(" (")
+        p.add_run(status).italic = True
+        p.add_run(")")
+    p.add_run(".").add_break()
+    if notes != "":
+        if LANG == "_JP":
+            notes = notes.replace("Representative Paper", "代表論文")
+        comment = p.add_run(notes)
+        comment.font.bold = True
+        comment.font.name = "Arial"
+        # comment.font.underline = True
+        comment.font.color.rgb = RGBColor.from_string("B10026")
+        comment.add_break()
+
+def make_publication_list(csv_file, separate_reviews = False):
+    # wrote 0 in the volume of Publications.csv to make the volume read as int
     header = "Academic Publications (All Peer Reviewed)"
     if LANG == "_JP":
         header = "学術論文 (査読あり)"
     doc.add_heading(header, level=1)
-    
-    pd.read_csv(bib_file)
+    df = pd.read_csv(csv_file, index_col = 0).fillna("").astype(str)
     N = df.shape[0]
     num_original = 0
     if separate_reviews == True:
         df = df.sort_values(by = ["type","year"], ascending = [True, False])
         num_original = df[df["type"]=="original"].shape[0]
-        doc.add_paragraph(f"{num_original}")
+        # doc.add_paragraph(f"{num_original}")
     for i in range(N):
         entry = df.iloc[i]
         write_entry(i, entry)
@@ -149,7 +153,6 @@ def make_award_list(award_csv):
         p.add_run(f"{prize}").bold = True
         p.add_run(f", {origin} ({date}).").add_break()
         if notes !="nan":
-            print(notes)
             comment = p.add_run(notes)
             comment.font.bold = True
             # comment.font.underline = True
@@ -213,7 +216,7 @@ def make_presentation_list(presentation_csv):
 
 
 
-doc = Document("../templates/Publication_List_Template.docx")
+
 # items = ["Heading", "Publications", "Presentations","Patents","Press","Funding","Awards"]
 # for item in items:
 #     doc.add_paragraph(item,style = "Heading 1")
@@ -221,15 +224,15 @@ doc = Document("../templates/Publication_List_Template.docx")
 
 LANG = "" # English    
 # LANG = "_JP" # Japanese
+doc = Document(f"../templates/CV_Template{LANG}.docx")
 
 
-
-make_publication_list(f"../achievements/Publications.bib", separate_reviews=True)
+make_publication_list(f"../achievements/Publications.csv", separate_reviews=True)
 make_presentation_list(f"../achievements/Presentations{LANG}.csv")
 make_funding_list(f"../achievements/Funding{LANG}.csv")
 make_patent_list(f"../achievements/Patents{LANG}.csv")
 make_award_list(f"../achievements/Awards{LANG}.csv")
 # make_others_list("Others.csv")
 make_press_list("../achievements/Press.csv")
-doc.save(f"../achievements/Publication_list{LANG}.docx")
+doc.save(f"../achievements/Ooka_CV{LANG}.docx")
 
