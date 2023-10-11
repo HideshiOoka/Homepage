@@ -24,7 +24,7 @@ def bib2df(bib_file, sort = True):
     df.to_csv("../achievements/Publications.csv")
     return df
 
-#%%
+
 def write_entry(i, entry): # need to write the df 
     ID, authors, journal, year, volume, pages, doi, notes, ENTRYTYPE, type, title, fullname, abbrv, status = entry
     authors = sort(authors)
@@ -229,61 +229,23 @@ def make_presentation_list(presentation_csv):
 
 
 
-doc = Document("Publication_List_Template.docx")
+doc = Document("../templates/Publication_List_Template.docx")
 # items = ["Heading", "Publications", "Presentations","Patents","Press","Funding","Awards"]
 # for item in items:
 #     doc.add_paragraph(item,style = "Heading 1")
 
 
 LANG = "" # English    
-LANG = "_JP" # Japanese
+# LANG = "_JP" # Japanese
 
 
 
-make_publication_list(f"Publications.bib", separate_reviews=True)
-make_presentation_list(f"Presentations{LANG}.csv")
-make_funding_list(f"Funding{LANG}.csv")
-make_patent_list(f"Patents{LANG}.csv")
-make_award_list(f"Awards{LANG}.csv")
+make_publication_list(f"../achievements/Publications.bib", separate_reviews=True)
+make_presentation_list(f"../achievements/Presentations{LANG}.csv")
+make_funding_list(f"../achievements/Funding{LANG}.csv")
+make_patent_list(f"../achievements/Patents{LANG}.csv")
+make_award_list(f"../achievements/Awards{LANG}.csv")
 # make_others_list("Others.csv")
-# make_press_list("Press.csv")
-doc.save(f"Publication_list{LANG}.docx")
+make_press_list("../achievements/Press.csv")
+doc.save(f"../achievements/Publication_list{LANG}.docx")
 
-
-"""
-standard write_entry
-def write_entry(i, entry): # need to write the df 
-    ID, authors, journal, year, volume, pages, doi, notes, ENTRYTYPE, type, title, fullname, abbrv, status = entry
-    authors = sort(authors)
-    print(notes,doi,status)
-    p = doc.add_paragraph(f"{i+1}.  ")
-    ### Authors:
-    p = add_formatted_authors(p,authors)
-    p.add_run(" \"").bold = True
-    p = add_formatted_title(p,title) 
-    p.add_run("\" ").bold = True
-    p.add_run(journal).italic = True
-    p.add_run(", ")
-    p.add_run(year).bold = True
-    p.add_run(", ")
-    if volume != "":
-        p.add_run(volume).italic = True
-        p.add_run(", ")
-    if pages != "":
-        p.add_run(pages)
-    else: # it doesn't have pages
-        p.add_run(doi) # it must have doi
-        p.add_run(" (")
-        p.add_run(status).italic = True
-        p.add_run(")")
-    p.add_run(".").add_break()
-    if notes != "":
-        if LANG == "_JP":
-            notes = notes.replace("Representative Paper", "代表論文")
-        comment = p.add_run(notes)
-        comment.font.bold = True
-        comment.font.name = "Arial"
-        # comment.font.underline = True
-        comment.font.color.rgb = RGBColor.from_string("B10026")
-        comment.add_break()
-"""

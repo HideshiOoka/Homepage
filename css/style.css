@@ -19,7 +19,7 @@ h2{
 	padding-top: 10px;
 	padding-right: 10px;
 	padding-bottom: 3px;
-	padding-left: 5px;
+	padding-left: 0px;
 }
 h3{
 	color: #910C07;
@@ -159,6 +159,7 @@ table.info th{
   .dropdown {
 	float: left;
 	overflow: hidden;
+	display: inline-block;
   }
   
   /* Dropdown button */
