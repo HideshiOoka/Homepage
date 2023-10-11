@@ -1,29 +1,20 @@
 #%%
 import pandas as pd
 import numpy as np
-import bibtexparser
 from docx import Document
 from docx.shared import RGBColor
 # date 20171101 for the CSRS Interim report might be off
-# from docx.shared import Pt
 # search Km and $ and { for TeX
 
-def bib2df(bib_file, sort = True):
-    with open(bib_file) as f:
-        bib = bibtexparser.load(f)
-    df = pd.DataFrame(bib.entries)    
-    cols = ["ID", "author","journal","year","volume","pages", "doi", "notes", "ENTRYTYPE"]
-    missing_cols = [item for item in df.columns if item not in cols]
-    cols += missing_cols
-    df = df[cols].sort_values(by=["year"], ascending = False)   
-    df = df.fillna("")
-    num_publications =df.shape[0]
-    corresponding_authors = df.author.str.contains("Ooka\*").sum()
-    first_authors = df.ID.str.contains("Ooka").sum()
-    print(num_publications, corresponding_authors, first_authors)
-    df.to_csv("../achievements/Publications.csv")
-    return df
 
+
+def sort(authors):
+    sorted_authors = ""
+    for a in authors.split(" and "):
+        last,first  = a.split(", ")
+        sorted_authors += first + " " + last + ", "
+    sorted_authors = sorted_authors[:-2]        
+    return sorted_authors
 
 def write_entry(i, entry): # need to write the df 
     ID, authors, journal, year, volume, pages, doi, notes, ENTRYTYPE, type, title, fullname, abbrv, status = entry
@@ -60,13 +51,6 @@ def write_entry(i, entry): # need to write the df
         comment.font.color.rgb = RGBColor.from_string("B10026")
         comment.add_break()
 
-def sort(authors):
-    sorted_authors = ""
-    for a in authors.split(" and "):
-        last,first  = a.split(", ")
-        sorted_authors += first + " " + last + ", "
-    sorted_authors = sorted_authors[:-2]        
-    return sorted_authors
 def add_formatted_title(p,title):  
     title = title.replace("--","-")   # -- in SPET
     if "CO" not in p.text and "MoS2" not in p.text:
@@ -98,7 +82,7 @@ def make_publication_list(bib_file, separate_reviews = False):
         header = "学術論文 (査読あり)"
     doc.add_heading(header, level=1)
     
-    df = bib2df(bib_file)
+    pd.read_csv(bib_file)
     N = df.shape[0]
     num_original = 0
     if separate_reviews == True:
