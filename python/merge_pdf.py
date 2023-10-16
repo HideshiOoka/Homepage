@@ -2,14 +2,17 @@
 import pypdf
 import glob
 merger = pypdf.PdfMerger()
-#%%
-base_dir = "C:/usr/Research/Funding/2023_Assc_Prof/20230930_Hyogo_Pref_U_Assc_Prof_Appl_Chem/"
-file_list = glob.glob(base_dir + "to_merge/*")
-print(file_list)
 
+base_dir = r"C:\usr\Research\Funding\2023_Assc_Prof\20231016_KyotoU_Prof"
+file_list = glob.glob(base_dir + "/*")
+file_list = [f for f in file_list if f[-4:] == ".pdf"]
+for f in file_list:
+    print(f)
+
+#%%
 for i, file in enumerate(file_list):
     merger.append(file)
-merger.write(base_dir + "merged_file.pdf")
+merger.write(base_dir + "/merged_file.pdf")
 merger.close()
 
 #%%
