@@ -2,6 +2,16 @@
 import pandas as pd
 import bibtexparser
 
+
+def sort_authors(authors):
+    sorted_authors = ""
+    for a in authors.split(" and "):
+        last,first  = a.split(", ")
+        sorted_authors += first + " " + last + ", "
+    sorted_authors = sorted_authors[:-2]        
+    return sorted_authors
+
+
 def write_csv_from_bib(bib_file, sort = True):
     with open(bib_file) as f:
         bib = bibtexparser.load(f)
