@@ -60,6 +60,10 @@ def add_formatted_authors(p,authors):
         if LANG == "_JP":
             my_name = "大岡英史"
             before, after = authors.split(my_name)
+    text_tag_list = [f"{before};",
+                     f"{my_name};bu",
+                     f"{after};"]
+    # p = write_docx(text_tag_list, add_paragraph = False)
     p.add_run(before)
     me = p.add_run(my_name)
     me.font.underline = True
@@ -249,8 +253,33 @@ make_award_list(f"../achievements/Awards{LANG}.csv")
 # make_others_list("Others.csv")
 make_press_list("../achievements/Press.csv")
 doc.save(f"../achievements/Ooka_CV{LANG}_draft.docx")
-#### To do list:
+
+
+#%% To do list:
 # After outputting the docs, the 1ページの行数を指定時に文字をグリッド線に合わせる needs to be unchecked (Ctrl + A).
 # 年度
 # Needs Japanese mode in general
+
+def write_docx(text_tag_list, add_paragraph = True):
+    if add_paragraph == True:
+        p = doc.add_paragraph()
+    for text_tag in text_tag_list:
+        text, tags = text_tag.split(";")
+        new_text = p.add_run(text)
+        if "b" in tags:
+            new_text.font.bold = True
+        if "i" in tags:
+            new_text.font.italic = True
+        if "u" in tags:
+            new_text.font.underline = True
+        if "^" in tags:
+            new_text.font.superscript = True
+        if "_" in tags:
+            new_text.font.subscript = True            
+    return p
+
+text_tag_list = ["abc;","abc;bu_","abssc;iu^"]
+doc = Document(f"../templates/CV_Template.docx")
+write_docx(text_tag_list)
+doc.save(f"../achievements/test.docx")
 
