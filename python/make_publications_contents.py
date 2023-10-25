@@ -49,7 +49,7 @@ for LANG in ["","_JP"]:
         ID, authors, journal, year, volume, pages, doi, notes, ENTRYTYPE, type, title, fullame, abbrv, status  = data
         if year < year_header:
             year_header = year
-            out_html += "\t<h3>{}</h3>\n".format(year_header)
+            out_html += "\t<h2>{}</h2>\n".format(year_header)
         authors = format_authors(authors)
         if pages == "": # must be not accepted yet
             volume = status
