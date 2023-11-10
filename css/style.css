@@ -61,6 +61,7 @@ img{border-style: none;}
 table.news{
 	padding: 8px 8px 8px 8px;
 	text-align: left;
+	vertical-align: top;
 	border-collapse: collapse;
 }
 
