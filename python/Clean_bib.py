@@ -12,8 +12,9 @@ from titlecase import titlecase
 # https://github.com/ppannuto/python-titlecase
 # pip install titlecase
 
-# filename = "Dissipative_CRN.bib"
-filename = "Publications.bib"
+filename = "../achievements/Dissipative_CRN.bib"
+journal_dict = "../achievements/Journal_Abbreviations.csv"
+# filename = "Publications.bib"
 #filename = "UBP1b.bib"
 def check(entry):
     if "=\"" in entry:
@@ -83,7 +84,7 @@ bib_data =bib_data.replace("\n", "")
 entries = bib_data.split("@")[1:]
     
 ### ABBREVIATE Journal Names
-df = pd.read_csv('Journal_Abbreviations.csv', encoding = "UTF-8")
+df = pd.read_csv(journal_dict, encoding = "UTF-8")
 df = df.fillna("")
 abbrv_dict = dict(zip(df.JOURNAL, df.ABBRV))
 abbrv_dict = {JOURNAL.upper(): ABBRV for JOURNAL, ABBRV in abbrv_dict.items()}
