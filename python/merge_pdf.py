@@ -3,9 +3,10 @@ import pypdf
 import glob
 merger = pypdf.PdfMerger()
 
-base_dir = r"C:\usr\Research\Funding\2023_Assc_Prof\20231016_KyotoU_Prof"
+base_dir = r"C:\Users\Hideshi_Ooka\Research\Applications\2023_Associate_Professors\20231130_OsakaU_Assc_Prof"
 file_list = glob.glob(base_dir + "/*")
 file_list = [f for f in file_list if f[-4:] == ".pdf"]
+file_list = sorted(file_list)
 for f in file_list:
     print(f)
 
