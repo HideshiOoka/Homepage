@@ -2,25 +2,26 @@
 #%%
 # -*- coding: utf-8 -*-
 """
-Created on Thu Dec 10 17:22:44 2020
-
 @author: Hideshi_Ooka
 """
 import pandas as pd
 import re
 from titlecase import titlecase
+## 20231218 clean_bib gives error
+
+
 # https://github.com/ppannuto/python-titlecase
 # pip install titlecase
-
+# filename = "../achievements/Publications.bib"
+#filename = "UBP1b.bib"
 filename = "../achievements/Dissipative_CRN.bib"
 journal_dict = "../achievements/Journal_Abbreviations.csv"
-# filename = "Publications.bib"
-#filename = "UBP1b.bib"
+
 def check(entry):
     if "=\"" in entry:
         print("This entry has quotation marks instead of parenthesses")
         print(entry)
-        # This warning shouldn't occur if bibtex is copied from Github
+        # This warning shouldn't occur if bibtex is copied from G scholar
 
 def get_abbrv_key(journal):
     abbrv, j_key = "", ""
@@ -65,7 +66,7 @@ def get_author_key(authors):
 
 def format_title(title):
     new_title = titlecase(title) # title.title()
-    print(new_title)
+    # print(new_title)
     return new_title
 
 def format_new_article(entry_dict):
@@ -73,7 +74,7 @@ def format_new_article(entry_dict):
     for key in USE_KEYS[:-2]: 
         new_article += ",\n    " + key + " = {" + entry_dict[key] + "}"
     new_article += "}\n\n"
-    new_article = new_article.replace("Ph ","pH ").replace("Ph-","pH-").replace("Ftir","FTIR").replace("Co2","CO2").replace("Co ","CO ").replace("Mos2","MoS2").replace("Cstr","CSTR").replace("Bep","BEP").replace("Feiv=O","FeIV=O").replace("Br{\O}Nsted","Br{\o}nsted").replace("Tca","TCA").replace("Brenda","BRENDA").replace("Kcat","kcat").replace("Volcano'S", "Volcano's").replace(r"Th\'Eorie G\'En\'Erale De L'Action",r"Th\'eorie G\'en\'erale De L'Action").replace("Sabio-Rk", "Sabio-RK")#.replace("N{\o}rskov","N{\o}rskov")
+    new_article = new_article.replace("Ph ","pH ").replace("Ph-","pH-").replace("Ftir","FTIR").replace("Co2","CO2").replace("Co ","CO ").replace("Mos2","MoS2").replace("Cstr","CSTR").replace("Bep","BEP").replace("Feiv=O","FeIV=O").replace(r"Br{\O}Nsted",r"Br{\o}nsted").replace("Tca","TCA").replace("Brenda","BRENDA").replace("Kcat","kcat").replace("Volcano'S", "Volcano's").replace(r"Th\'Eorie G\'En\'Erale De L'Action",r"Th\'eorie G\'en\'erale De L'Action").replace("Sabio-Rk", "Sabio-RK").replace(r"Norskov",r"N{\o}rskov")
     return new_article
 
 with open(filename, "r", encoding = "UTF-8") as f:
@@ -86,13 +87,16 @@ entries = bib_data.split("@")[1:]
 ### ABBREVIATE Journal Names
 df = pd.read_csv(journal_dict, encoding = "UTF-8")
 df = df.fillna("")
+df = df.sort_values(by="JOURNAL")
+df.to_csv(journal_dict, index = False)
+
 abbrv_dict = dict(zip(df.JOURNAL, df.ABBRV))
 abbrv_dict = {JOURNAL.upper(): ABBRV for JOURNAL, ABBRV in abbrv_dict.items()}
 key_dict = dict(zip(df.ABBRV, df.KEY))
 key_dict = {ABBRV.upper(): KEY for ABBRV, KEY in key_dict.items()}
 
 new_bib_data = ""
-USE_KEYS = ["author", "journal","abbrv", "fullname","year", "volume","pages", "title", "j_key", "bib_key"]
+USE_KEYS = ["author", "journal","abbrv", "fullname","year", "volume","pages", "title", "j_key", "bib_key","preprint","url","doi","url"]
 ABBREVIATE = True
 
 for entry in entries:
@@ -104,7 +108,6 @@ for entry in entries:
                 entry_dict[x] = entry.split(x,1)[1].split("{",1)[1].split("},")[0]
             else:
                 entry_dict[x] = "XXX"
-               
         entry_dict["abbrv"] = get_abbrv_key(entry_dict["journal"])[0]
         entry_dict["j_key"] = get_abbrv_key(entry_dict["abbrv"])[1]
         entry_dict["fullname"] = entry_dict["journal"]
@@ -123,9 +126,10 @@ for entry in entries:
         formatted_title = format_title(title)
         new_entry = new_entry.replace(title, formatted_title)+"}}\n\n"
     new_bib_data += new_entry
-#%%          
 with open(filename, 'w', encoding = "UTF-8") as f:
     f.write(new_bib_data)        
+
+
 
 #%%
 """
