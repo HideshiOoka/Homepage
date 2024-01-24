@@ -43,11 +43,14 @@ for LANG in ["","_JP"]:
     out_html = f"(Corresponding Author: {num_corresponding}, First Author: {num_first})<br>\n\n"
 
     out_html += f"\n\t<h2>Original Articles</h2><ol>\n"
-    year_header = "2030"
+    year_header = 2030
 
     for i in range(N):
         data = df.iloc[i].astype(str)
         type,notes,status,url,preprint,bib_key,j_key,title,pages,volume,year,fullname,abbrv,journal,authors,ENTRYTYPE,ID  = data
+        year = int(year)
+        volume = volume.replace(".0","")
+        print(volume)
         if year < year_header:
             year_header = year
             out_html += "\t<h2>{}</h2>\n".format(year_header)
@@ -70,6 +73,9 @@ for LANG in ["","_JP"]:
     for i in range(N):
         data = df.iloc[i].astype(str)
         title, authors, journal, year, volume, pages, URL, type, date, doi, notes = data
+        year = int(year)
+        volume = int(volume)
+
         title = format_title(title)
         authors = format_authors(authors)
         if pages != "": # it has "proper" bibliography information:
@@ -81,6 +87,9 @@ for LANG in ["","_JP"]:
 
 
     out_html = out_html.replace("MoS$_2$", "MoS<sub>2</sub>").replace("CO$_2$", "CO<sub>2</sub>").replace("{\`e}","&egrave").replace("MnO$_2$", "MnO<sub>2</sub>")
+    out_html = out_html.replace("--"," - ")
+    out_html = out_html.replace("<i></i>, ","")
+
     if LANG == "_JP":
         out_html = translate(out_html)
 
