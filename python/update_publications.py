@@ -88,7 +88,7 @@ for LANG in ["","_JP"]:
 
     out_html = out_html.replace("MoS$_2$", "MoS<sub>2</sub>").replace("CO$_2$", "CO<sub>2</sub>").replace("{\`e}","&egrave").replace("MnO$_2$", "MnO<sub>2</sub>")
     out_html = out_html.replace("--"," - ")
-    out_html = out_html.replace("<i></i>, ","").replace(", .", ".").replace("..",".")
+    out_html = out_html.replace("<i></i>, ","").replace(", .", ".").replace(".</i>.",".")
 
     if LANG == "_JP":
         out_html = translate(out_html)
