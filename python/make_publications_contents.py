@@ -46,14 +46,14 @@ for LANG in ["","_JP"]:
 
     for i in range(N):
         data = df.iloc[i].astype(str)
-        ID, authors, journal, year, volume, pages, doi, notes, ENTRYTYPE, type, title, fullame, abbrv, status  = data
+        type,notes,status,url,preprint,bib_key,j_key,title,pages,volume,year,fullname,abbrv,journal,authors,ENTRYTYPE,ID  = data
         if year < year_header:
             year_header = year
             out_html += "\t<h2>{}</h2>\n".format(year_header)
         authors = format_authors(authors)
-        if pages == "": # must be not accepted yet
+        if pages == "": # not accepted or volume undecided
             volume = status
-            pages = doi
+            pages = url
         
         out_html += f"\t\t<li>{authors} \"{title}\", <i>{journal}</i>, <b>{year}</b>, <i>{volume}</i>, {pages}.<br>\n\n"
         if i == num_original-1:
@@ -83,5 +83,10 @@ for LANG in ["","_JP"]:
     if LANG == "_JP":
         out_html = translate(out_html)
 
-    with open(f"../contents/publications{LANG}_contents.html", "w", encoding="utf-8") as f:
-        f.write(out_html)
+    with open(f"../publications{LANG}.html", "r", encoding="utf-8") as f:
+        original_html = f.read()
+        original_contents = original_html.split("<!-- PAGE SPECIFICS -->")[1].split("<!-- END PAGE SPECIFICS-->")[0]
+        # print(original_contents[6000:])
+    with open(f"../publications{LANG}.html", "w", encoding="utf-8") as f:
+        new_html = original_html.replace(original_contents, out_html)
+        f.write(new_html)

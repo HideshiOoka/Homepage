@@ -14,7 +14,8 @@ from titlecase import titlecase
 # pip install titlecase
 # filename = "../achievements/Publications.bib"
 #filename = "UBP1b.bib"
-filename = "../achievements/Dissipative_CRN.bib"
+# filename = "../achievements/Dissipative_CRN.bib"
+filename = "../achievements/Publications.bib"
 journal_dict = "../achievements/Journal_Abbreviations.csv"
 
 def check(entry):
@@ -71,7 +72,7 @@ def format_title(title):
 
 def format_new_article(entry_dict):
     new_article = "@article{" + entry_dict["bib_key"] 
-    for key in USE_KEYS[:-2]: 
+    for key in USE_KEYS: 
         new_article += ",\n    " + key + " = {" + entry_dict[key] + "}"
     new_article += "}\n\n"
     new_article = new_article.replace("Ph ","pH ").replace("Ph-","pH-").replace("Ftir","FTIR").replace("Co2","CO2").replace("Co ","CO ").replace("Mos2","MoS2").replace("Cstr","CSTR").replace("Bep","BEP").replace("Feiv=O","FeIV=O").replace(r"Br{\O}Nsted",r"Br{\o}nsted").replace("Tca","TCA").replace("Brenda","BRENDA").replace("Kcat","kcat").replace("Volcano'S", "Volcano's").replace(r"Th\'Eorie G\'En\'Erale De L'Action",r"Th\'eorie G\'en\'erale De L'Action").replace("Sabio-Rk", "Sabio-RK").replace(r"Norskov",r"N{\o}rskov")
@@ -96,18 +97,20 @@ key_dict = dict(zip(df.ABBRV, df.KEY))
 key_dict = {ABBRV.upper(): KEY for ABBRV, KEY in key_dict.items()}
 
 new_bib_data = ""
-USE_KEYS = ["author", "journal","abbrv", "fullname","year", "volume","pages", "title", "j_key", "bib_key","preprint","url","doi","url"]
+USE_KEYS = ["author", "journal","abbrv", "fullname","year", "volume","pages", "title", "j_key", "bib_key","preprint","url","status","notes","type"]
 ABBREVIATE = True
 
 for entry in entries:
     entry = entry.rsplit("}}", 1)[0]
+    print(entry)
     if entry.split("{")[0] == "article": 
         entry_dict = {}
         for x in USE_KEYS:
             if x in entry:
+                print(x,entry)
                 entry_dict[x] = entry.split(x,1)[1].split("{",1)[1].split("},")[0]
             else:
-                entry_dict[x] = "XXX"
+                entry_dict[x] = ""
         entry_dict["abbrv"] = get_abbrv_key(entry_dict["journal"])[0]
         entry_dict["j_key"] = get_abbrv_key(entry_dict["abbrv"])[1]
         entry_dict["fullname"] = entry_dict["journal"]
