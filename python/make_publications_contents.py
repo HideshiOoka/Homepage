@@ -34,7 +34,8 @@ def translate(txt):
 for LANG in ["","_JP"]:
     #### Main Articles #####
     df = pd.read_csv(f"../achievements/Publications.csv", index_col = 0) # {LANG}
-    df = df.sort_values(by = ["type","year"], ascending = [True, False]).fillna("")
+    # df = df.sort_values(by = ["type","year"], ascending = [True, False]).fillna("")
+    df = df.sort_values(by = ["year"], ascending = [False]).fillna("")
     N = df.shape[0]
     num_original = df[df["type"]=="original"].shape[0]
     num_corresponding = df["author"].str.contains("Ooka*").sum() 
