@@ -1,10 +1,17 @@
 #%%
+"""
+To update the publication list, the Publications.bib file should be updated manually.
+Then, the bib will be converted to csv and then written to html
+"""
+
 import pandas as pd
+from update_date import update_date
 translate_dict = {"Scientific Publications":"論文",
                   "Corresponding Author":"責任著者",
                   "First Author":"筆頭著者",
                   "Last Author":"最終著者",
-                  "Patents":"知財・特許"}    
+                  "Patents":"知財・特許",
+                  "Dual ":"共同"}    
 def format_title(title):
     return title.replace(";",",")
 def format_date(date,n=8): # change format if n < 8
@@ -25,8 +32,12 @@ def format_authors(authors):
 def translate(txt):
     for k,v in translate_dict.items():
         txt = txt.replace(k,v)
-    return txt   
-for LANG in ["","_JP"]:
+    return txt
+
+
+
+
+def write_publications_html(LANG):
     #### Main Articles #####
     publications = pd.read_csv(f"../achievements/Publications.csv", index_col = 0) # {LANG}
     publications = publications.sort_values(by = ["status"]).iloc[::-1]
@@ -37,9 +48,9 @@ for LANG in ["","_JP"]:
     editorial = publications[publications["type"]=="Editorial"]
 
 
-    num_corresponding = publications["author"].str.contains("Ooka*").sum() 
-    num_first = publications["ID"].str.contains("Ooka").sum()
-    out_html = f"(Corresponding Author: {num_corresponding}, First Author: {num_first})<br>\n\n"
+    num_corresponding = publications["author"].str.contains("Ooka*").sum() # Must write Ooka*+, not Ooka+*
+    num_first = publications["ID"].str.contains("Ooka").sum() + publications["author"].str.contains("Ooka+",regex=False).sum() + publications["author"].str.contains("Ooka*+",regex=False).sum()
+    out_html = f"<br>(Corresponding Author: {num_corresponding}, First Author: {num_first}, +: Dual First Author)<br>\n\n"
 
     df_list =[original, review, editorial]
     for i, df in enumerate(df_list):
@@ -91,7 +102,6 @@ for LANG in ["","_JP"]:
         title, authors, journal, year, volume, pages, URL, type, date, doi, notes = data
         year = int(year)
         volume = int(volume)
-
         title = format_title(title)
         authors = format_authors(authors)
         if pages != "": # it has "proper" bibliography information:
@@ -99,9 +109,6 @@ for LANG in ["","_JP"]:
         if pages == "": # it must have a URL
             out_html += f"\t\t<li>{authors} \"{title}\", <i>{journal}</i> (<a href={URL}>URL</a>).<br>\n\n"
     out_html += "\t</ol>\n\n"
-
-
-
     out_html = out_html.replace("MoS$_2$", "MoS<sub>2</sub>").replace("CO$_2$", "CO<sub>2</sub>").replace("{\`e}","&egrave").replace("MnO$_2$", "MnO<sub>2</sub>")
     out_html = out_html.replace("--"," - ")
     out_html = out_html.replace("<i></i>, ","").replace(", .", ".")
@@ -115,4 +122,5 @@ for LANG in ["","_JP"]:
         # print(original_contents[6000:])
     with open(f"../publications{LANG}.html", "w", encoding="utf-8") as f:
         new_html = original_html.replace(original_contents, out_html)
+        new_html = update_date(new_html)
         f.write(new_html)

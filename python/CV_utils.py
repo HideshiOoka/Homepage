@@ -2,7 +2,6 @@
 import pandas as pd
 import bibtexparser
 
-
 def sort_authors(authors):
     sorted_authors = ""
     for a in authors.split(" and "):
