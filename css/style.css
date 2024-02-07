@@ -6,8 +6,7 @@ html {font-size: 100%;}
 		margin-top: 10px;
 	}
 	.navbar li {
-		margin: 0 20px;
-		color: red;
+		margin: 0 200px;
 	}
 	.page-header {
 		flex-direction: column;
