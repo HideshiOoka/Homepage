@@ -1,18 +1,4 @@
 @charset "UTF-8";
-html {font-size: 100%;}
-@media (max-width: 600px) {
-	.navbar {
-		font-size: 1rem;
-		margin-top: 10px;
-	}
-	.navbar li {
-		margin: 0 200px;
-	}
-	.page-header {
-		flex-direction: column;
-		align-items: center;
-	}
-}
 
 body {background-color:#F7F9FB;
 	line-height: 1.6;
@@ -227,3 +213,19 @@ table.info th{
 	display: block;
   }
 
+
+  
+html {font-size: 100%;}
+@media (max-width: 600px) {
+	.navbar {
+		font-size: 1rem;
+		margin-top: 10px;
+	}
+	.navbar li {
+		margin: 0 200px;
+	}
+	.page-header {
+		flex-direction: column;
+		align-items: center;
+	}
+}
