@@ -48,7 +48,7 @@ def write_publications_html(LANG):
     editorial = publications[publications["type"]=="Editorial"]
 
 
-    num_corresponding = publications["author"].str.contains("Ooka*").sum() # Must write Ooka*+, not Ooka+*
+    num_corresponding = publications["author"].str.contains("Ooka\*").sum() # Must write Ooka*+, not Ooka+*
     num_first = publications["ID"].str.contains("Ooka").sum() + publications["author"].str.contains("Ooka+",regex=False).sum() + publications["author"].str.contains("Ooka*+",regex=False).sum()
     out_html = f"<br>(Corresponding Author: {num_corresponding}, First Author: {num_first}, +: Dual First Author)<br>\n\n"
 
