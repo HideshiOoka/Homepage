@@ -1,13 +1,12 @@
 @charset "UTF-8";
 
-body {background-color:#F7F9FB;
+body { background-color:#F7F9FB;
 	line-height: 1.6;
 }
 
-img {border-style: none;
+img { border-style: none;
 	max-width: 100%;
 }
-	
 
 .wrapper{
 	margin: 0 auto 0 auto;

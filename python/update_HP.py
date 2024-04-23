@@ -9,3 +9,4 @@ save_cleaned_bib()
 for LANG in ["","_JP"]:
     write_presentations_html(LANG)
     write_publications_html(LANG)
+    # update funding, add hyphen japanese
