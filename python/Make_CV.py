@@ -5,7 +5,6 @@ from docx import Document
 from docx.shared import RGBColor, Pt
 from docx.enum.text import WD_LINE_SPACING
 import re
-from docx.oxml.ns import nsdecls
 from docx.oxml import parse_xml
 from CV_utils import sort_authors #,quote
 
@@ -282,6 +281,14 @@ def make_presentation_list(presentation_csv):
 def make_press_list(press_csv):
     pass ##########
 
+def make_education_list(education_csv):
+    pass
+
+def make_others_list(others_csv):
+    # TOEIC on 20240421
+    # CSRS diversity
+    # Finished Globis leadership
+    pass
 def make_others_list(others_csv):
     header = "Others"
     if LANG == "_JP":
@@ -302,11 +309,12 @@ LANG = "" # English
 doc = Document(f"../templates/CV_Template{LANG}.docx")
 make_publication_list(f"../achievements/Publications.csv", separate_reviews=True)
 make_presentation_list(f"../achievements/Presentations{LANG}.csv")
-make_funding_list(f"../achievements/Funding{LANG}.csv")
 make_patent_list(f"../achievements/Patents{LANG}.csv")
 make_award_list(f"../achievements/Awards{LANG}.csv")
+make_funding_list(f"../achievements/Funding{LANG}.csv")
+make_education_list(f"../achievements/Funding{LANG}.csv")
+# make_press_list("../achievements/Press.csv")
 # make_others_list("../achievements/Others{LANG}.csv")
-make_press_list("../achievements/Press.csv")
 doc.save(f"../achievements/Ooka_CV{LANG}_draft.docx")
 
 
