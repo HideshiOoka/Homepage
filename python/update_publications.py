@@ -6,33 +6,8 @@ Then, the bib will be converted to csv and then written to html
 
 import pandas as pd
 from update_date import update_date
-translate_dict = {"Scientific Publications":"論文",
-                  "Corresponding Author":"責任著者",
-                  "First Author":"筆頭著者",
-                  "Last Author":"最終著者",
-                  "Patents":"知財・特許",
-                  "Dual ":"共同"}    
-def format_title(title):
-    return title.replace(";",",")
-def format_date(date,n=8): # change format if n < 8
-    date = str(date)
-    formatted_date = date[:4]+"/"+date[4:6]+"/"+date[6:8]
-    formatted_date = formatted_date.replace("X","")
-    return formatted_date
-def format_authors(authors):
-    sorted_authors = ""
-    for a in authors.split(" and "):
-        try:
-            last,first  = a.split(", ")
-            sorted_authors += first + " " + last + ", "
-        except ValueError:
-            sorted_authors += a + ", "
-    sorted_authors = sorted_authors[:-2]        
-    return sorted_authors
-def translate(txt):
-    for k,v in translate_dict.items():
-        txt = txt.replace(k,v)
-    return txt
+from formatting import format_date, format_title, format_authors
+from languages import translate
 
 
 
