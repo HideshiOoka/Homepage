@@ -114,5 +114,4 @@ def write_publications_html(LANG, translate_dict):
     with open(f"../publications{LANG}.html", "w", encoding="utf-8") as f:
         new_html = original_html.replace(original_contents, out_html)
         new_html = update_date(new_html)
-        new_html = translate(new_html, LANG, translate_dict)
         f.write(new_html)
