@@ -1,6 +1,8 @@
 #%%
 import pandas as pd
 from update_date import update_date
+from translate import translate
+
 import datetime
 def format_date(date,n=8): # change format if n < 8
     date = str(date)
@@ -9,7 +11,6 @@ def format_date(date,n=8): # change format if n < 8
     return formatted_date
 
 format_list = ["Upcoming Presentations","Invited","Oral","Poster"]
-all_df = pd.read_csv("../achievements/Presentations.csv")
 today = int(datetime.date.today().strftime("%Y%m%d"))
 
 def write_presentation_html(df, out_html, format):
@@ -24,7 +25,14 @@ def write_presentation_html(df, out_html, format):
     out_html += "\t</ol>\n\n"
     return out_html
 
-def write_presentations_html(LANG):
+def write_presentations_html(LANG, translate_dict):
+    file_name = f"../achievements/Presentations{LANG}.csv"
+    all_df = pd.read_csv(file_name)
+    try: 
+        all_df == all_df.sort_values(by=["Date"])
+    except ValueError:
+        all_df.to_csv(file_name, index = False)
+
     out_html = ""
     for j,format in enumerate(format_list):
         if format == "Upcoming Presentations":
@@ -33,7 +41,8 @@ def write_presentations_html(LANG):
             df = all_df[all_df.Date < today]
             df = df[df.Format == format_list[j]]
         out_html = write_presentation_html(df, out_html, format)
-            
+    
+    out_html = translate(out_html, LANG, translate_dict)            
     with open(f"../presentations{LANG}.html", "r", encoding="utf-8") as f:
         original_html = f.read()
         original_contents = original_html.split("<!-- PAGE SPECIFICS -->\n")[1].split("<!-- END PAGE SPECIFICS-->")[0]

@@ -6,12 +6,8 @@ Then, the bib will be converted to csv and then written to html
 
 import pandas as pd
 from update_date import update_date
-translate_dict = {"Scientific Publications":"論文",
-                  "Corresponding Author":"責任著者",
-                  "First Author":"筆頭著者",
-                  "Last Author":"最終著者",
-                  "Patents":"知財・特許",
-                  "Dual ":"共同"}    
+from translate import translate
+
 def format_title(title):
     return title.replace(";",",")
 def format_date(date,n=8): # change format if n < 8
@@ -29,15 +25,8 @@ def format_authors(authors):
             sorted_authors += a + ", "
     sorted_authors = sorted_authors[:-2]        
     return sorted_authors
-def translate(txt):
-    for k,v in translate_dict.items():
-        txt = txt.replace(k,v)
-    return txt
 
-
-
-
-def write_publications_html(LANG):
+def write_publications_html(LANG, translate_dict):
     #### Main Articles #####
     publications = pd.read_csv(f"../achievements/Publications.csv", index_col = 0) # {LANG}
     publications = publications.sort_values(by = ["status"]).iloc[::-1]
@@ -112,9 +101,7 @@ def write_publications_html(LANG):
     out_html = out_html.replace("MoS$_2$", "MoS<sub>2</sub>").replace("CO$_2$", "CO<sub>2</sub>").replace("{\`e}","&egrave").replace("MnO$_2$", "MnO<sub>2</sub>")
     out_html = out_html.replace("--"," - ")
     out_html = out_html.replace("<i></i>, ","").replace(", .", ".")
-
-    if LANG == "_JP":
-        out_html = translate(out_html)
+    out_html = translate(out_html, LANG, translate_dict) 
 
     with open(f"../publications{LANG}.html", "r", encoding="utf-8") as f:
         original_html = f.read()
@@ -123,4 +110,5 @@ def write_publications_html(LANG):
     with open(f"../publications{LANG}.html", "w", encoding="utf-8") as f:
         new_html = original_html.replace(original_contents, out_html)
         new_html = update_date(new_html)
+        new_html = translate(new_html, LANG, translate_dict)
         f.write(new_html)

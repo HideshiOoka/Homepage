@@ -1,4 +1,4 @@
-﻿Date,Conference,Venue,Country_or_City,Title,Authors,Format,Notes
+Date,Conference,Venue,Country_or_City,Title,Authors,Format,Notes
 20130324,"Japan Society for Bioscience, Biotechnology, and Agrochemistry Annual Meeting",Tohoku University,Sendai,Wavelength Dependence of Euglena Photomotility,"Hideshi Ooka, Takumi Ishii, Ryuhei Nakamura, Kazuhito Hashimoto",Oral,
 20131021,The 3rd CSJ Chemistry Festa,Tower Hall Funabori,Tokyo,Study on Euglena Photomotility towards Microbial Biofuel Production,"Hideshi Ooka, Takumi Ishii, Ryuhei Nakamura, Kazuhito Hashimoto",Poster,
 20140329,Electrochemical Society of Japan 81st Annual Meeting,Kansai University,Suita,Element Strategy of Water Splitting: Difference between Mn and Ir,"Hideshi Ooka, Akira Yamaguchi, Kazuhito Hashimoto, Ryuhei Nakamura",Oral,
@@ -48,12 +48,16 @@
 20230908,74th Annual Meeting of the International Society of Electrochemistry,Lyon,France,Predicting the Operational Lifetime of Electrocatalysis,"Hideshi Ooka, Marie E. Wintzer, Ryuhei Nakamura",Oral,
 20230911,2023 Workshop on Bidirectional Catalysis From Molecular Machines to Enzymes,Marseille,France,Kinetic Modeling of Enzymes and Electrocatalysts,Hideshi Ooka,Invited,
 20230916,Lecture as a Senior,Fuzoku Ikeda Junior High School,Osaka,"Research is Fun! Wait, is studying fun too!?",Hideshi Ooka,Invited,
-20231216,MRM2023,Kyoto International Conference Center,Kyoto,Theory towards Predicting the Lifetime of Electrocatalysis ,"Hideshi Ooka, Marie E. Wintzer, Hirokazu Komatsu, Kiyohiro Adachi, Ailong Li, Shuang Kong, Daisuke Hashizume, Atsushi Mochizuki, Ryuhei Nakamura",Poster
-20240109,The 12th ELSI Symposium,"Tokyo Institute of Technology, Earth-Life Science Institute",Tokyo,Autocatalytic Threshold to Sustain Chemical Reaction Networks in the Presence of Diffusion,Hideshi Ooka,Poster
-20240109,The 12th ELSI Symposium,"Tokyo Institute of Technology, Earth-Life Science Institute",Tokyo,Bioinformatic Assessment on the Linear Scaling Relationship between the Binding Affinity and the Rate Constant of Enzymes,"Taiyo Tamura, Hideshi Ooka, Kosuke Fujishima",Poster
-20240109,The 12th ELSI Symposium,"Tokyo Institute of Technology, Earth-Life Science Institute",Tokyo,Chemical Reaction Networks from a Non-autonomous Viewpoint,"Tomoharu Suda, Hideshi Ooka, Ryuhei Nakamura",Poster
+20231216,MRM2023,Kyoto International Conference Center,Kyoto,Theory towards Predicting the Lifetime of Electrocatalysis ,"Hideshi Ooka, Marie E. Wintzer, Hirokazu Komatsu, Kiyohiro Adachi, Ailong Li, Shuang Kong, Daisuke Hashizume, Atsushi Mochizuki, Ryuhei Nakamura",Poster,
+20240109,The 12th ELSI Symposium,"Tokyo Institute of Technology, Earth-Life Science Institute",Tokyo,Autocatalytic Threshold to Sustain Chemical Reaction Networks in the Presence of Diffusion,Hideshi Ooka,Poster,
+20240109,The 12th ELSI Symposium,"Tokyo Institute of Technology, Earth-Life Science Institute",Tokyo,Bioinformatic Assessment on the Linear Scaling Relationship between the Binding Affinity and the Rate Constant of Enzymes,"Taiyo Tamura, Hideshi Ooka, Kosuke Fujishima",Poster,
+20240109,The 12th ELSI Symposium,"Tokyo Institute of Technology, Earth-Life Science Institute",Tokyo,Chemical Reaction Networks from a Non-autonomous Viewpoint,"Tomoharu Suda, Hideshi Ooka, Ryuhei Nakamura",Poster,
 20240213,RIKEN Discovery Evening,RIKEN,Wako,Acquiring Skills Toward Uncovering the Laws of Nature,Hideshi Ooka,Invited,
 20240316,The 91st ECSJ Annual Meeting,Nagoya University,Nagoya,Advancements of Electrocatalysis Theory towards Realizing Activity and Stability,"Hideshi Ooka, Ryuhei Nakamura",Oral,
 20240321,The 104th CSJ Annual Meeting,Nihon University,Funabashi,Towards a Post-Sabatier Theory of Electrocatalysis: Realizing Activity and Stability,"Hideshi Ooka, Ryuhei Nakamura",Oral,
-20240526,Japan Geoscience Union Meeting 2023,Makuhari Messe,Tokyo,Kinetic Requirements to Sustain Chemical Reaction Networks in an Open System,Hideshi Ooka,Oral
-20240326,"Japan Society for Bioscience, Biotechnology, and Agroscience 2024 Annual Meeting",Tokyo University of Agriculture,Tokyo,Bioinformatic Analysis on the Relationship between the Binding Affinity and Catalytic Activity of Enzymes,"Taiyo Tamura, Hideshi Ooka, Kosuke Fujishima",Oral
+20240526,Japan Geoscience Union Meeting 2023,Makuhari Messe,Tokyo,Kinetic Requirements to Sustain Chemical Reaction Networks in an Open System,Hideshi Ooka,Oral,
+20240326,"Japan Society for Bioscience, Biotechnology, and Agroscience 2024 Annual Meeting",Tokyo University of Agriculture,Tokyo,Bioinformatic Analysis on the Relationship between the Binding Affinity and Catalytic Activity of Enzymes,"Taiyo Tamura, Hideshi Ooka, Kosuke Fujishima",Oral,
+20240617,3rd Meeting of the Molecular Life Reactions FOREST Society,Okinawa Institute of Science and Technology,Okinawa,Understanding Enzymatic Activity and Reversibility Using Microkinetic Models,Hideshi Ooka,Poster,
+20240617,3rd Meeting of the Molecular Life Reactions FOREST Society,Okinawa Institute of Science and Technology,Okinawa,Bioinformatic Analysis on the Relationship Between the Rate Constant and Substrate Binding Affinity of Enzymes,"Tamura Taiyo, Hideshi Ooka, Kosuke Fujishima",Poster,
+20240627,MIMS/CMMA Seminar on Self-Organization,Meiji University,Tokyo,"Dynamical Systems Analysis of Catalysis using Experiments, Mathematics, and Machine Learning",Hideshi Ooka,Invited,
+20240902,Data Science Seminar,Meiji University,Tokyo,TBA,Hideshi Ooka,Invited,

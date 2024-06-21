@@ -95,12 +95,12 @@ def save_cleaned_bib(filename = "../achievements/Publications.bib"):
     new_bib_data = ""
     for entry in entries:
         entry = entry.rsplit("}}", 1)[0]
-        print(entry)
+        # print(entry)
         if entry.split("{")[0] == "article": 
             entry_dict = {}
             for x in USE_KEYS:
                 if x in entry:
-                    print(x,entry)
+                    # print(x,entry)
                     entry_dict[x] = entry.split(x,1)[1].split("{",1)[1].split("},")[0]
                 else:
                     entry_dict[x] = ""
