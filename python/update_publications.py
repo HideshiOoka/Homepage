@@ -7,7 +7,9 @@ Then, the bib will be converted to csv and then written to html
 import pandas as pd
 from update_date import update_date
 from translate import translate
-
+from formatting import format_date, format_title, format_authors
+# from languages import translate
+"""
 def format_title(title):
     return title.replace(";",",")
 def format_date(date,n=8): # change format if n < 8
@@ -25,6 +27,8 @@ def format_authors(authors):
             sorted_authors += a + ", "
     sorted_authors = sorted_authors[:-2]        
     return sorted_authors
+"""
+
 
 def write_publications_html(LANG, translate_dict):
     #### Main Articles #####
