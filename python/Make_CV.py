@@ -5,13 +5,14 @@ from docx import Document
 from docx.shared import RGBColor, Pt
 from docx.enum.text import WD_LINE_SPACING
 import re
-from docx.oxml import parse_xml
+from docx.oxml.ns import qn
+from docx.oxml import OxmlElement
 from CV_utils import sort_authors #,quote
-
 # date 20171101 for the CSRS Interim report might be off
 #%%
 def h1(text):
-    yellow_background = parse_xml(r'<w:shd {} w:fill="#FFF2CC"/>'.format(nsdecls('w')))
+    yellow_background = OxmlElement("w:shd")
+    yellow_background.set(qn("w:fill"), "#FFF2CC")
     tbl = doc.add_table(1,1)
     tbl.cell(0,0).text = text
     tbl.rows[0].cells[0]._tc.get_or_add_tcPr().append(yellow_background)
