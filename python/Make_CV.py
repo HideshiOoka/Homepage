@@ -2,7 +2,7 @@
 import pandas as pd
 import numpy as np
 from docx import Document
-from docx.shared import RGBColor, Pt
+from docx.shared import RGBColor, Pt, Cm
 from docx.enum.text import WD_LINE_SPACING
 import re
 from docx.oxml.ns import qn
@@ -10,36 +10,54 @@ from docx.oxml import OxmlElement
 from CV_utils import sort_authors #,quote
 # date 20171101 for the CSRS Interim report might be off
 #%%
-def h1(text):
+def h1(txt):
     yellow_background = OxmlElement("w:shd")
     yellow_background.set(qn("w:fill"), "#FFF2CC")
     tbl = doc.add_table(1,1)
-    tbl.cell(0,0).text = text
+    tbl.cell(0,0).text = txt
     tbl.rows[0].cells[0]._tc.get_or_add_tcPr().append(yellow_background)
+    header = tbl.cell(0,0).paragraphs[0].runs[0]
+    header.font.size = Pt(14)
+    bold(header)
+    """
     header = tbl.cell(0,0).paragraphs[0].runs[0].font.name = "Arial"
     if LANG == "_JP":
         header = tbl.cell(0,0).paragraphs[0].runs[0].font.name = "游ゴシック" # Doesn't work, not sure why
     header = tbl.cell(0,0).paragraphs[0].runs[0].font.bold = True
-    header = tbl.cell(0,0).paragraphs[0].runs[0].font.size = Pt(14)
+    """
     # tbl.rows.height = Pt(64)
     # tbl.line_spacing = WD_LINE_SPACING.MULTIPLE(5) # Pt(18) # WD_LINE_SPACING.EXACTLY
+
+def bold(txt, font_name = "Arial"):
+    txt.font.bold = True
+    txt.font.name = font_name
+    if txt.text.isascii() == False:
+        font_name = "游ゴシック"
+        txt.font.name = font_name
+        txt._element.rPr.rFonts.set(qn('w:eastAsia'), txt.font.name)
+
+
+def red(txt, color = "B10026"):
+    txt.font.color.rgb = RGBColor.from_string(color)
 
 def h2(text):
     p = doc.add_paragraph()
     header = p.add_run(text)
-    header.font.name = "Arial"
     header.font.size = Pt(14)
     header.font.underline = True
-    header.font.bold = True
+    bold(header)
     
 def add_formatted_title(p,title):
+    # 20240820 stopped making title bold. Instead, use bold on year and journal
     quotes = ['"','"']
     if title.isascii() == False:
         quotes = ['「','」']
-    p.add_run(f" {quotes[0]}").bold = True
+    quote = p.add_run(f" {quotes[0]}")
+    # bold(quote)
     title = title.replace("--","-")   # -- in SPET
     if "$_" not in title: # no subscripts
-        p.add_run(title).bold = True
+        title = p.add_run(title)
+        # bold(title)
     else: 
         substrings = title.split(r"$_")
         for substring in substrings:
@@ -49,9 +67,11 @@ def add_formatted_title(p,title):
                 subscript, upright = "", substring
             sub_text = p.add_run(subscript)
             sub_text.font.subscript = True
-            sub_text.font.bold = True
-            p.add_run(upright).bold = True
-    p.add_run(quotes[1]).bold = True
+            # bold(sub_text)
+            upright = p.add_run(upright)
+            # bold(upright)
+    quote = p.add_run(f" {quotes[1]}")
+    # bold(quote)    
     p.add_run(" ") # assuming that there is some information coming after this 
     return p
 
@@ -70,11 +90,24 @@ def add_formatted_authors(p,authors):
     p.add_run(before)
     me = p.add_run(my_name)
     me.font.underline = True
-    me.font.bold = True
+    bold(me)
     p.add_run(after)
     return p
 
 def write_entry(i, entry): # need to write the df 
+    
+    tbl = doc.add_table(1,2)
+    tbl.allow_autofit = False
+    tbl.autofit = False
+    # tbl.columns[0].width = Cm(0.01)
+    # tbl.columns[1].width = Cm(20)
+    
+    tbl.cell(0,0).text = f"{i+1}."
+    tbl.cell(0,1).text = ""
+    p = tbl.cell(0,1).paragraphs[0]
+    
+    
+    
     type,notes,status,url,preprint,bib_key,j_key,title,pages,volume,year,fullname,abbrv,journal,authors,ENTRYTYPE,ID = entry
     print(authors)
     # ID, authors, journal, year, volume, pages, doi, notes, ENTRYTYPE, type, title, fullname, abbrv, status = entry
@@ -82,12 +115,15 @@ def write_entry(i, entry): # need to write the df
     if volume !="":
         volume = str(int(volume))
     authors = sort_authors(authors)
-    p = doc.add_paragraph(f"{i+1}.\t")
+    
     p = add_formatted_authors(p,authors) ### Authors:
     p = add_formatted_title(p,title) 
-    p.add_run(journal).italic = True
+    journal = p.add_run(journal)
+    journal.italic = True
+    bold(journal)
     p.add_run(", ")
-    p.add_run(year).bold = True
+    year = p.add_run(year)
+    bold(year)
     p.add_run(", ")
     if pages != "":
         pages = pages.replace("--","-")
@@ -104,11 +140,11 @@ def write_entry(i, entry): # need to write the df
         if LANG == "_JP":
             notes = notes.replace("Representative Paper", "代表論文")
         comment = p.add_run(notes)
-        comment.font.bold = True
-        comment.font.name = "Arial"
+        bold(comment)
         # comment.font.underline = True
         comment.font.color.rgb = RGBColor.from_string("B10026")
         comment.add_break()
+    
 """
 def make_publication_list(csv_file, separate_reviews = False):
     
@@ -196,7 +232,13 @@ def make_funding_list(funding_csv):
             PI = PI_text
         else:
             PI = Co_PI_text
-        p = doc.add_paragraph(f"{i+1}.  ")
+            
+        tbl = doc.add_table(1,2)
+        tbl.allow_autofit = False
+        tbl.autofit = False
+        tbl.cell(0,0).text = f"{i+1}."
+        tbl.cell(0,1).text = ""
+        p = tbl.cell(0,1).paragraphs[0]
         p.add_run(f"{source} {name} ({PI})\n")
         p = add_formatted_title(p,title) 
         start = str(start)
@@ -217,12 +259,20 @@ def make_award_list(award_csv):
         date,prize,origin,notes = data[["Date","Prize","From","Notes"]]
         date = str(date)
         date = f"{date[:4]}/{date[4:6]}/{date[6:]}"
-        p = doc.add_paragraph(f"{i+1}.  ")
-        p.add_run(f"{prize}").bold = True
+
+        tbl = doc.add_table(1,2)
+        tbl.allow_autofit = False
+        tbl.autofit = False
+        tbl.cell(0,0).text = f"{i+1}."
+        tbl.cell(0,1).text = ""
+        p = tbl.cell(0,1).paragraphs[0]
+
+        prize = p.add_run(f"{prize}")
+        bold(prize)
         p.add_run(f", {origin} ({date}).").add_break()
         if notes !="nan":
             comment = p.add_run(notes)
-            comment.font.bold = True
+            bold(comment)
             # comment.font.underline = True
             comment.font.color.rgb = RGBColor.from_string("B10026")
             comment.add_break()
@@ -238,7 +288,13 @@ def make_patent_list(patent_csv):
         data = df.iloc[i,:5]
         date,status,authors,title,ID = data
         authors = authors.replace(" and",",")
-        p = doc.add_paragraph(f"{i+1}.  ")
+        tbl = doc.add_table(1,2)
+        tbl.allow_autofit = False
+        tbl.autofit = False
+        tbl.cell(0,0).text = f"{i+1}."
+        tbl.cell(0,1).text = ""
+        p = tbl.cell(0,1).paragraphs[0]
+    
         ### Authors:
         p = add_formatted_authors(p,authors)
         p = add_formatted_title(p,title) 
@@ -267,16 +323,22 @@ def make_presentation_list(presentation_csv):
             data = df.iloc[i].astype(str)
             date,conference,venue,country_or_city,title,authors,format,notes = data[:8]
             formatted_date = format_date(date)
-            p = doc.add_paragraph(f"{i+1}.  ")
+            tbl = doc.add_table(1,2)
+            tbl.allow_autofit = False
+            tbl.autofit = False
+            tbl.cell(0,0).text = f"{i+1}."
+            tbl.cell(0,1).text = ""
+            p = tbl.cell(0,1).paragraphs[0]
+
             p = add_formatted_authors(p,authors)
             p = add_formatted_title(p,title) 
             p.add_run(f"{conference}, {venue}, {country_or_city} ({formatted_date}).").add_break()
             if notes !="nan":
                 comment = p.add_run(notes)
                 print(notes)
-                comment.font.bold = True
+                bold(comment)
                 # comment.font.underline = True
-                comment.font.color.rgb = RGBColor.from_string("B10026")
+                red(comment)
                 comment.add_break()
 
 def make_press_list(press_csv):
@@ -305,7 +367,7 @@ def make_others_list(others_csv):
         p = doc.add_paragraph(f"{i+1}.  ")
         p.add_run(f"{contents}.").add_break()
 
-LANG = "" # English    
+LANG = "_JP" # English    
 # LANG = "_JP" # Japanese
 doc = Document(f"../templates/CV_Template{LANG}.docx")
 make_publication_list(f"../achievements/Publications.csv", separate_reviews=True)
@@ -319,8 +381,13 @@ make_education_list(f"../achievements/Funding{LANG}.csv")
 doc.save(f"../achievements/Ooka_CV{LANG}_draft.docx")
 
 
+
+
 #%% To do list:
-# After outputting the docs, the 1ページの行数を指定時に文字をグリッド線に合わせる needs to be unchecked (Ctrl + A).
+# The draft version has equal width columns and needs to be changed manually. 20240820
+# Also check new line locations
+# After outputting the docs, the 1ページの行数を指定時に文字をグリッド線に合わせる needs to be unchecked (Ctrl + A). 20240820, not necessary?
+
 # 年度
 # Needs Japanese mode in general
 
