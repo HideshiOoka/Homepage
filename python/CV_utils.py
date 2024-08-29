@@ -23,6 +23,6 @@ def write_csv_from_bib(bib_file, sort = True):
     corresponding_authors = df.author.str.contains(r"Ooka\*").sum()
     first_authors = df.ID.str.contains("Ooka").sum()
     print(num_publications, corresponding_authors, first_authors)
-    df.to_csv("../achievements/Publications.csv")
+    df.to_csv("../achievements/publications.csv")
 if __name__ == "__main__":
-    write_csv_from_bib("../achievements/Publications.bib")
+    write_csv_from_bib("../achievements/publications.bib")
