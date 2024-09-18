@@ -24,11 +24,12 @@ def presentation_df_to_html(df, out_html, format):
 def write_presentations_html(LANG, translate_dict):
     file_name = f"../achievements/Presentations{LANG}.csv"
     all_df = pd.read_csv(file_name)
-    try: 
-        all_df == all_df.sort_values(by=["Date"])
-    except ValueError:
-        all_df.to_csv(file_name, index = False)
-
+    all_df.Date.astype(int)
+    # try: 
+    #     all_df == all_df.sort_values(by=["Date"])
+    # except ValueError:
+    #     all_df.to_csv(file_name, index = False)
+    # This part probably not working
     out_html = ""
     for j,format in enumerate(format_list):
         if format == "Upcoming Presentations":
