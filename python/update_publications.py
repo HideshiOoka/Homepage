@@ -88,7 +88,7 @@ def write_publications_html(LANG, translate_dict):
     #### Other Articles (Non Peer Reviewed) #####
     out_html += f"<h2>Other Articles (Non Peer Reviewed)</h2><ol>\n"
     df = pd.read_csv(f"../achievements/Non_Peer_Reviewed{LANG}.csv")
-    df = df.sort_values(by = ["Date"], ascending = [False]).fillna("")
+    df = df.sort_values(by = ["Year"], ascending = [False]).fillna("")
     N = df.shape[0]
     for i in range(N):
         data = df.iloc[i].astype(str)
@@ -100,7 +100,7 @@ def write_publications_html(LANG, translate_dict):
         if pages != "": # it has "proper" bibliography information:
             out_html += f"\t\t<li>{authors} \"{title}\", <i>{journal}</i>, <b>{year}</b>, <i>{volume}</i>, {pages}.<br>\n\n"
         if pages == "": # it must have a URL
-            out_html += f"\t\t<li>{authors} \"{title}\", <i>{journal}</i> (<a href={URL}>URL</a>).<br>\n\n"
+            out_html += f"\t\t<li>{authors} \"{title}\", <i>{journal}</i>, <b>{year}</b> (<a href={URL}>URL</a>).<br>\n\n"
     out_html += "\t</ol>\n\n"
     out_html = out_html.replace("MoS$_2$", "MoS<sub>2</sub>").replace("CO$_2$", "CO<sub>2</sub>").replace("{\`e}","&egrave").replace("MnO$_2$", "MnO<sub>2</sub>")
     out_html = out_html.replace("--"," - ")
