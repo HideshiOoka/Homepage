@@ -2,10 +2,16 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<meta name="description" content = "Personal Website of Hideshi Ooka. Research Projects: Electrocatalysis, chemical reaction network theory, microkinetic modelling, enzyme kinetics, machine learning">
+<meta name="description" content = "Personal Website of Hideshi Ooka. Research Projects: Electrocatalysis, Microkinetics, Biocatalysis, Chemical Reaction Networks, Machine Learning" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" type="image/svg" href="images/crn_icon_blue_red.svg">
 <title>Hideshi Ooka | Blog</title>
-<link rel="stylesheet" type="text/css" href="css/style.css">
+<!-- CSS -->
+	<link rel="stylesheet" href="https://unpkg.com/destyle.css@1.0.5/destyle.css">
+	<link rel="stylesheet" type="text/css" href="css/style.css">
+	<link rel="canonical" href="https://hideshiooka.com/" />
 </head>
+
 
 <body>
 <div class="wrapper">
@@ -15,24 +21,19 @@
             <li><a href=index.html>Home</a></li>
             <li><a href=about_me.html>About Me</a></li>
             <li><a href=research.html>Research</a></li>
-            <li>
-                <div class="dropdown">
-                    <button class="dropbtn">Achievements</button>
-                    <div class="dropdown-content">
-                        <ul>
-                            <li><a href="publications.html">Publications</a></li>
-                            <li><a href="presentations.html">Presentations</a></li>
-                            <li><a href="funding.html">Funding</a></li>
-                            <li><a href="patents.html">Patents</a></li>
-                            <li><a href="awards.html">Awards</a></li>
-                        </ul>
-                    </div>
-                </div>	
+            <li class="dropdown"><a href="" >Achievements</a>
+				<ul >
+					<li><a href="publications.html">Publications</a></li>
+					<li><a href="presentations.html">Presentations</a></li>
+					<li><a href="funding.html">Funding</a></li>
+					<li><a href="patents.html">Patents</a></li>
+					<li><a href="awards.html">Awards</a></li>
+				</ul>
             </li>
             <li><a href=vacancies.html>Vacancies</a></li>
             <li><a href=blog.html>Blog</a></li>
             <li><a href=contact.html>Contact</a></li>
-            <li><a href=blog_JP.html>Japanese</a></li>
+            <li class="lang_toggle"><a href=blog_JP.html>Japanese</a></li>
         </ul>
     </div>
 
@@ -81,6 +82,7 @@
 		<li>An Introduction to Systems Biology by Uri Alon (<a href=https://www.amazon.co.jp/Introduction-Systems-Biology-Mathematical-Computational/dp/1439837171>Textbook</a>)</li>
 	</ul>
 	<i>Disclaimer: I am not affiliated nor have any commercial interests regarding the links above.</i>
+	
 	<div id="footer">
 		<p>&copy:2023 Hideshi Ooka (Last Update: 2024/03/06)</p>
 	</div>

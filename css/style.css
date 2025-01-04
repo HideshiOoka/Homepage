@@ -1,221 +1,243 @@
 @charset "UTF-8";
 
-body { background-color:#F7F9FB;
-	line-height: 1.6;
+/*
+GENERAL STYLING
+================================================ */
+:root {
+	--main-color: #06466e;
+	--off-main-color: #0e4c72;
+	--sub-color: #BB1109;
+	--sub-sub-color: #F48153;
+	--off-white: #F7F9FB;
+}
+
+html {
+    font-size: 100%;
+}
+
+body { 
+	background-color:var(--off-white);	
+	font-family: sans-serif;
 }
 
 img { border-style: none;
 	max-width: 100%;
 }
 
-.wrapper{
-	margin: 0 auto 0 auto;
-	width: 900px; /*XXX*/
-	}
-h2 {color: #033453;
-	font-size: 20px;
-	border-bottom-width: 2px;
+h2 {color: var(--main-color);
+	font-size: 1.5rem;
+	font-weight:bold;
+	border-bottom-width: 2.5px;
 	border-bottom-style: dotted;
-	border-bottom-color: #033453;
-	margin-top: 20px;
-	margin-right: 0px;
-	margin-bottom: 20p;
-	margin-left: 0px;
+	border-bottom-color: var(--main-color);
 	padding-top: 10px;
-	padding-right: 10px;
-	padding-bottom: 3px;
-	padding-left: 0px;
-	}
-h3 {color: #910C07;
-	font-size: 16px;
+	padding-left: 10px;
+	margin-bottom: 0.5rem;
 	}
 
-p{
-		line-height: 160%;
-		color : #000000;
-		text-align: justify
+h3 {color: var(--sub-color);
+	font-size: 1.2rem;
+	font-weight:bold;
+	padding: 20px 0px 5px;
+	text-decoration: underline var(--sub-color)
+	}
+
+p, th, td {
+	line-height: 120%;
+	color : #000000;
+	text-align: justify;
+	padding-bottom: 0.5rem;
 }
 
-a:link{color: #000000;}
-a:visited{color: #000000;}
-a:hover{color: #F48153;}
-a:active{color: #F48153;}
-
-#footer{
-		margin-top: 30px;
-		background-color: #033453;/* 5085A5*/
+a {
+	text-decoration: underline grey;
 }
-#footer p{
-	color: #F7F9FB;
-	margin: 0 0 10 0 ;
-	padding: 5px 30px 5px 30px;
+a:hover {
+	color: var(--sub-sub-color);
+	text-decoration: underline var(--sub-sub-color);
+}
+/*
+a:link {color: black;}
+a:visited {color: black;}
+a:active {color: var(--sub-sub-color);}
+*/
+ol {
+	list-style-type: decimal;
+}
+li {
+	margin-bottom: 0.5rem;
+}
+
+/* SPECIFICS
+================================================ */	
+.wrapper {
+	width: 900px;
+    margin: 0 auto;
+    /* padding: 0 0; */
+	/* display:flex; */	
+}
+/*=====main navbar=====*/
+.navbar ul {
+	display: flex;
+	align-items: stretch;
+	justify-content: space-between;
+	margin:0;
+	padding:0;
+	background-color: var(--main-color);
+}
+
+.navbar li {
+	overflow:visible; 
+	display: block;
+	flex: 0 1 auto;
+	list-style-type:none;
+	background-color: var(--main-color);
+	margin: 0.5rem 0rem;
+}
+
+.navbar a {
+	color: white;
 	text-decoration: none;
+	text-align: center;
+	padding: 0 1rem;
+  }
+
+.navbar a:hover{
+	color: var(--sub-sub-color);
+}  
+
+/* =====navbar language===== */
+li.lang_toggle {
+	width:6rem;
 }
 
+/* =====navbar dropdown===== */
+li.dropdown {
+	position:relative;
+}
+.dropdown ul {
+	position:absolute;
+	/* top:0rem;  */
+	display:none;
+	/* display:block; */
+	box-shadow: 3px 5px 3px rgba(0,0,0,0.5);
+	z-index: 1;
+	list-style-type:none;
+}
+
+/* .navbar li:hover ul{ */
+.dropdown:hover ul {
+	display:block;
+}
+
+.dropdown li {
+	background-color: var(--off-main-color);
+	overflow:visible; 
+	padding: 0.3rem 0rem;	
+	/* flex: 0 1 auto; */
+	/* padding: 0.5rem 1rem; */
+}
+.dropdown li:hover {
+	background-color: #ddd;
+}
+.dropdown li:hover a {
+	color: var(--sub-sub-color)
+}
+
+
+/* =====footer===== */
+#footer {
+	background-color: var(--main-color);
+	margin-top: 30px;
+}
+
+#footer p {
+	color: var(--off-white);	
+	text-align: center;
+	padding: 2px;
+}
+
+/* =====footer===== */
 #scroll {
 		overflow-y: scroll;
-		height: 200px;
-}
-
-table.news tr { /************/
-	/* margin: 8px 0px 8px 8px;*/
-	text-align: left;
-	border-collapse: collapse;
-	padding-bottom: 10 em; /**/
-}
-table.news th {
-	vertical-align: top;
-}
-table.news td {
-	vertical-align: top;
-	border-bottom: solid 1px #7b7e80;
+		height: calc(45vh);
 }
 
 
 
-.fig{
+/* 
+Individual Styles
+================================================ */
+/*index.html */
+.toc {
 	text-align: center;
 	margin-top: 30px; 
 }
-p.caption{	font-style: italic;
-			margin-top: -5px;
-			text-align: center
+p.caption{	
+	font-style: italic;
+	text-align: center
 }
 
+.news tr {
+	text-align: left;
+	border-bottom: solid 1px #7b7e80;
+}
+.news td {
+	padding: 0.5rem; 
+} 
+.news th {
+	padding: 0.5rem; 
+} 
 
-
-/* Individual Styles*/
-/*index.html */
-.TOC{margin: 0px 0 0 0;}
-/* .news_item{margin: 0 100 0 0 ;}*/
-	
-/*about.html */
+/*about_me.html */
+.main li::before {
+	content: "";
+	width: 0.3rem;
+	height: 0.3rem;
+	margin: 0.25rem 0.5rem 0.25rem 0.25rem; 
+	border-radius: 50%;
+	background: var(--main-color);
+	display: inline-block;
+}
 .float img {
 	float: left;
-	padding-right: 1em;
+	padding-right: 1rem;
 }
 
 table.info{
 	border-collapse: collapse;
-	border: 1px solid #033453;
+	border: 1px solid var(--main-color);
 }
 table.info th, table.info td{
 	padding: 8px 8px 8px 8px;
-	border: 1px solid #033453;
+	border: 1px solid var(--main-color);
 	text-align: left;
 	vertical-align: middle;
 }
 table.info th{
 	background-color: #F7F9FB;
-	color: #033453;
+	color: var(--main-color);
 }
 
 
 
 
-.navbar {
-	overflow: hidden;
-	font-family: Arial;
-	margin: 0 0 5 0;
-	padding: 1px 15px;
-	background-color: #033453;
-  }
 
-  
-/* Links inside the navbar */
-.navbar a {
-	float: left;
-	font-size: 16px;
-	color: white;
-	text-align: center;
-	padding: 0px 20px 10px;
-	text-decoration: none;
-  }
-  
-.navbar li{
-	display: inline;
-	list-style-type: none;
-	padding-right: 0px;
-}
-
-.navbar li ul {
-	position: absolute;
-	top: 100%;
-	display: block;
-	background-color: #033453;
-	padding: 0 0 0 0;
+/* MOBILE SIZE I don't think its being applied
+================================================ 
+@media screen and (max-width: 700px) {
+	.navbar a {
+		font-size:20px;
+	  float: none;
+	  display: block;
+	  width: 100%;
+	  text-align: left;
 	}
-
-.navbar li a:link{
-	color: #F7F9FB;
-	text-decoration: none;
-}
-
-.navbar li a:active{
-	color: #F48153; /* not sure what this is for*/
-	text-decoration: none;
-}
-.navbar li a:visited{
-	color: #F7F9FB;
-	text-decoration: none;
-}
-.navbar li a:hover{
-	color: #F48153;
-	text-decoration: none;	
-}
-
-  /* The dropdown container */
-.dropdown {
-	float: left;
-	overflow: hidden;
-	display: inline-block;
-}
-  
-  /* Dropdown button */
-  .dropdown .dropbtn {
-	font-size: 16px;
-	border: none;
-	outline: none;
-	color: white;
-	padding: 0px 20px;
-	background-color: inherit;
-	font-family: inherit; /* Important for vertical align on mobile phones */
-	margin: 0; /* Important for vertical align on mobile phones */
-  }
-    
-.dropdown-content {
-	display: none;
-	position: absolute;
-	background-color: #f9f9f9;
-	min-width: 1600px;
-	box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-	z-index: 1;
-  }
-  
-  /* Links inside the dropdown */
-  .dropdown-content a {
-	float: none;
-	color: black;
-	padding: 12px 16px;
-	text-decoration: none;
-	display: block;
-	text-align: left;
-  }
-  
-  /* Add a grey background color to dropdown links on hover */
-  .dropdown-content a:hover {
-	background-color: #ddd;
-  }
-  
-  /* Show the dropdown menu on hover */
-  .dropdown:hover .dropdown-content {
-	display: block;
   }
 
+ 
 
-  
-html {font-size: 100%;}
-@media (max-width: 600px) {
+@media (max-width: 700px)  {
 	.navbar {
 		font-size: 1rem;
 		margin-top: 10px;
@@ -228,3 +250,4 @@ html {font-size: 100%;}
 		align-items: center;
 	}
 }
+*/

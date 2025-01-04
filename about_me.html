@@ -3,8 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="description" content = "Personal Website of Hideshi Ooka. Research Projects: Electrocatalysis, chemical reaction network theory, microkinetic modelling, enzyme kinetics, machine learning">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" type="image/svg" href="images/crn_icon_blue_red.svg">
 <title>Hideshi Ooka | About_Me</title>
-<link rel="stylesheet" type="text/css" href="css/style.css">
+<!-- CSS -->
+	<link rel="stylesheet" href="https://unpkg.com/destyle.css@1.0.5/destyle.css">
+	<link rel="stylesheet" type="text/css" href="css/style.css">
 </head>
 
 <body>
@@ -15,30 +19,25 @@
             <li><a href=index.html>Home</a></li>
             <li><a href=about_me.html>About Me</a></li>
             <li><a href=research.html>Research</a></li>
-            <li>
-                <div class="dropdown">
-                    <button class="dropbtn">Achievements</button>
-                    <div class="dropdown-content">
-                        <ul>
-                            <li><a href="publications.html">Publications</a></li>
-                            <li><a href="presentations.html">Presentations</a></li>
-                            <li><a href="funding.html">Funding</a></li>
-                            <li><a href="patents.html">Patents</a></li>
-                            <li><a href="awards.html">Awards</a></li>
-                        </ul>
-                    </div>
-                </div>	
+            <li class="dropdown"><a href="" >Achievements</a>
+				<ul >
+					<li><a href="publications.html">Publications</a></li>
+					<li><a href="presentations.html">Presentations</a></li>
+					<li><a href="funding.html">Funding</a></li>
+					<li><a href="patents.html">Patents</a></li>
+					<li><a href="awards.html">Awards</a></li>
+				</ul>
             </li>
             <li><a href=vacancies.html>Vacancies</a></li>
             <li><a href=blog.html>Blog</a></li>
             <li><a href=contact.html>Contact</a></li>
-            <li><a href=about_me_JP.html>Japanese</a></li>
+            <li class="lang_toggle"><a href=about_me_JP.html>Japanese</a></li>
         </ul>
     </div>
-
     <!-- PAGE SPECIFICS -->
+	<div class="main">
 		<h2> About Me</h2>
-			<p class="float"><img src="images/Ooka.jpg" width ="140" alt="Self Photo">I am a research scientist located at RIKEN, Japan. My main research goal is to formulate a theory which can predict the behavior of chemical reaction networks. </p>
+			<p class="float"><img src="images/Ooka_Trimmed.jpg" width ="140" alt="Self Photo">I am a research scientist located at RIKEN, Japan. My research focuses on making theories to predict the properties of catalytic reaction networks.</p>
 				
 			<p>Many chemical processes we are interested in consist of multiple chemical reactions. For example, catalytic reactions typically involve at least two steps: First, the reactant must adsorb on the catalyst, and afterwards, the reactant must desorb to yield the product. In reality, the true mechanism is more complex with many more steps involved, thus resulting in a network of multiple chemical reactions. Right now, it is difficult to accurately predict the properties of a chemical reaction, such as the reaction rate or stability, because the kinetics of a reaction are difficult to formulate. Breaking this barrier and paving the way towards quantitative prediction of catalyst properties is my major research goal.</p>
 
@@ -49,7 +48,7 @@
 
 			
 		<h2> Curriculum Vitae</h2>
-		<a href="achievements/Ooka_CV.docx" download>Download Full CV</a>
+		(<a href="achievements/Ooka_CV.docx" download>Download Full CV</a>)
 			<h3> Professional Experience </h3>
 			<ul>
 				<li>Research Scientist, RIKEN  (October 2020 ~ to present).</li>
@@ -76,7 +75,7 @@
 				<li>Python (Machine learning, numerical simulations, bioinformatics).</li>
 				<li>TOEIC score 990 (full marks) as of April 21st, 2024.</li>
 			</ul>	
-
+		</div>
 	<div id="footer">
 		<p>&copy:2023 Hideshi Ooka (Last Update: 2024/06/28)</p>
 	</div>
