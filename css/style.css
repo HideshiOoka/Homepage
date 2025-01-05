@@ -5,7 +5,7 @@ GENERAL STYLING
 ================================================ */
 :root {
 	--main-color: #06466e;
-	--off-main-color: #0e4c72;
+	--off-main-color: #246b96;
 	--sub-color: #BB1109;
 	--sub-sub-color: #F48153;
 	--off-white: #F7F9FB;
@@ -50,7 +50,7 @@ p, th, td {
 }
 
 a {
-	text-decoration: underline grey;
+	text-decoration: underline #333;
 }
 a:hover {
 	color: var(--sub-sub-color);
@@ -63,6 +63,7 @@ a:active {color: var(--sub-sub-color);}
 */
 ol {
 	list-style-type: decimal;
+	padding: 0 2rem;
 }
 li {
 	margin-bottom: 0.5rem;
@@ -73,8 +74,7 @@ li {
 .wrapper {
 	width: 900px;
     margin: 0 auto;
-    /* padding: 0 0; */
-	/* display:flex; */	
+	padding: 1rem;
 }
 /*=====main navbar=====*/
 .navbar ul {
@@ -89,27 +89,35 @@ li {
 .navbar li {
 	overflow:visible; 
 	display: block;
-	flex: 0 1 auto;
+	flex: auto;
 	list-style-type:none;
 	background-color: var(--main-color);
-	margin: 0.5rem 0rem;
+	margin: 0;
+	border: solid 1px var(--off-white);
+	text-align: center;
 }
 
 .navbar a {
+	display:block;
 	color: white;
-	text-decoration: none;
-	text-align: center;
-	padding: 0 1rem;
+	text-decoration: none;	
+	padding: 0.3rem 0rem;
   }
 
 .navbar a:hover{
-	color: var(--sub-sub-color);
+	background-color: var(--off-main-color);
 }  
-
-/* =====navbar language===== */
+/* =====navbar language===== 
+This is necessary to keep English and Japanese navbars the same size*/
 li.lang_toggle {
 	width:6rem;
 }
+
+/* =====hide hamburger by default (for large screens) ===== */
+.hamburger-menu {
+	display: none;
+}
+
 
 /* =====navbar dropdown===== */
 li.dropdown {
@@ -117,32 +125,27 @@ li.dropdown {
 }
 .dropdown ul {
 	position:absolute;
-	/* top:0rem;  */
+	top: 1.8rem; 
 	display:none;
-	/* display:block; */
 	box-shadow: 3px 5px 3px rgba(0,0,0,0.5);
 	z-index: 1;
 	list-style-type:none;
 }
 
-/* .navbar li:hover ul{ */
 .dropdown:hover ul {
 	display:block;
 }
 
 .dropdown li {
-	background-color: var(--off-main-color);
+	/* background-color: var(--off-main-color); */
 	overflow:visible; 
-	padding: 0.3rem 0rem;	
-	/* flex: 0 1 auto; */
-	/* padding: 0.5rem 1rem; */
+	border: solid 1px #ddd;
+	text-align: left;
 }
-.dropdown li:hover {
-	background-color: #ddd;
+.dropdown li a {
+	padding: 0.2rem 2rem;
 }
-.dropdown li:hover a {
-	color: var(--sub-sub-color)
-}
+
 
 
 /* =====footer===== */
@@ -170,6 +173,7 @@ Individual Styles
 ================================================ */
 /*index.html */
 .toc {
+	/* width: 90vw; */
 	text-align: center;
 	margin-top: 30px; 
 }
@@ -223,31 +227,70 @@ table.info th{
 
 
 
-/* MOBILE SIZE I don't think its being applied
-================================================ 
-@media screen and (max-width: 700px) {
-	.navbar a {
-		font-size:20px;
-	  float: none;
-	  display: block;
-	  width: 100%;
-	  text-align: left;
+/* MOBILE SIZE
+================================================ */
+@media (max-width: 899px) {
+	.wrapper {
+		width : 100vw;
 	}
-  }
 
- 
+	/* Display the Hamburger Menu */
+	.hamburger-menu {
+		font-size: 1.5rem;
+		width: 5em;
+		display: block;
+		z-index: 100;
+		position: relative;
+		top: 0px;
+		left: 0px;
+		color: white;
+		/* background-size: 6px 6px; */
+		background-color: var(--main-color);
+		padding: 0.2em 0.5em 0.2em 2em;
+	}
+	.hamburger-menu::before {
+		position: absolute;
+		content: "";
+		padding: 0.5em 0.5em;
+		left: 0.5em; 
+		background: linear-gradient(
+			to bottom, 
+			var(--main-color), var(--main-color) 14%, 
+			white 14%, white 28%, 
+			var(--main-color) 28%, var(--main-color) 42%, 
+			white 42%, white 56%, 
+			var(--main-color) 56%, var(--main-color) 70%, 
+			white 70%, white 84%, 
+			var(--main-color) 84%, var(--main-color) 90%
+		);
+	}
+			
+	.navbar ul {
+		display: none;
+		position: absolute;
+		top: 3.5rem;
+		transition: .5s;
+	}
+	.nav-contents.open {
+		display: block;
+	}
+	
+	.nav-contents li {	
+		text-align: left;
+		width: 50vw;
+	}
+	.nav-contents li a {	
+		padding: 0.5rem 0rem 0.5rem 1rem;		
+	}
+	.dropdown ul {
+		display: block;
+		left: 50vw;
+		top: 0vw;
+	}
+}	
 
-@media (max-width: 700px)  {
-	.navbar {
-		font-size: 1rem;
-		margin-top: 10px;
-	}
-	.navbar li {
-		margin: 0 200px;
-	}
-	.page-header {
-		flex-direction: column;
-		align-items: center;
+@media (max-width: 430px) {
+	#footer p {
+		font-size: small;
 	}
 }
-*/

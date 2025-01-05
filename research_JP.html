@@ -16,12 +16,12 @@
 <div class="wrapper">
     <!-- NAVIGATION -->
     <div class="navbar">
-        <ul>
+        <ul class="nav-contents">
             <li><a href=index_JP.html>Home</a></li>
             <li><a href=about_me_JP.html>About Me</a></li>
             <li><a href=research_JP.html>Research</a></li>
-            <li class="dropdown"><a href="" >Achievements</a>
-				<ul >
+            <li class="dropdown"><a href="" >Achievements &#9660</a>
+				<ul>
 					<li><a href="publications_JP.html">Publications</a></li>
 					<li><a href="presentations_JP.html">Presentations</a></li>
 					<li><a href="funding_JP.html">Funding</a></li>
@@ -34,6 +34,7 @@
             <li><a href=contact_JP.html>Contact</a></li>
             <li class="lang_toggle"><a href=research.html>English</a></li>
         </ul>
+		<button class = "hamburger-menu">Menu</button>
     </div>
 
     <!-- PAGE SPECIFICS -->
@@ -50,7 +51,7 @@
 		<h3>電極触媒反応</h3>
 		<p>電極触媒では、水素発生反応(HER)など、確立されている反応機構がいくつか存在します。これらを大賞とした数理解析により、従来理論よりも高い反応速度を与える結合の強さがあることを予測し(2019 <i>JPCL</i>)、実際に高活性触媒である白金の実験結果が理論を指示することを明らかにしてきました(2021 <i>ACS Catal.</i>)。特に、この論文では独自の機械学習アルゴリズムを開発し、実験データと理論式がどの程度整合性があり、フィッティングにより得られたパラメーターがどの程度確からしいかを評価しました。現在、より酸素発生反応（OER)など、より複雑な反応に展開しようとしています。</p>  
 
-		<p>代表的な論文: <a href = https://doi.org/10.1021/acs.jpclett.4c02162><i>JPCL</i> 2024</a>, <a href = https://pubs.acs.org/doi/full/10.1021/acscatal.1c01018><i>ACS Catalysis</i> 2021</a>, <a href = https://pubs.acs.org/doi/full/10.1021/acs.jpclett.9b01796><i>JPCL</i> 2019</a>.</p>
+		<p>代表論文: <a href = https://doi.org/10.1021/acs.jpclett.4c02162><i>JPCL</i> 2024</a>, <a href = https://pubs.acs.org/doi/full/10.1021/acscatal.1c01018><i>ACS Catalysis</i> 2021</a>, <a href = https://pubs.acs.org/doi/full/10.1021/acs.jpclett.9b01796><i>JPCL</i> 2019</a>.</p>
         
 	
 		<h3 id="Michaelis-Menten Enzymes">ミカエリス・メンテン型の酵素</h3>
@@ -58,7 +59,7 @@
 			
 		<p>現在、実験家と連携し、この法則がどこまで適用可能か、評価しようとしています。いずれ、「良い」酵素が満たすべき物理化学的な条件が明らかになれば、複数の酵素の組み合わせからなる代謝ネットワークがどのように設計されてきたのか、ということに取り組みたいと考えています。</p>
 		
-		<p>代表的な論文: <a href = https://www.nature.com/articles/s41467-023-40471-y><i>Nat. Commun.</i> 2023</a>, <a href = https://onlinelibrary.wiley.com/doi/full/10.1002/anie.202318635><i>Angewandte</i> 2024</a></p>		
+		<p>代表論文: <a href = https://www.nature.com/articles/s41467-023-40471-y><i>Nat. Commun.</i> 2023</a>, <a href = https://onlinelibrary.wiley.com/doi/full/10.1002/anie.202318635><i>Angewandte</i> 2024</a></p>		
 
 		<div class="fig">
 			<img src="images/Catalysts_and_Enzymes.png" width=100%  alt="">
@@ -68,11 +69,13 @@
 	<h2 id="General Networks">抽象化された反応機構の解析</h2>
 		<p>上述のような、ある特定の反応機構をもとに速度論モデルを構築することは化学において古くから行われてきました。しかし、この手法では想定されうる反応機構を一つ一つ、解析しなければなりません。しかも、<i>in-situ</i>分光などにより、理論解析の前提となる反応機構が間違っていることが分かった場合、解析を一からやり直す必要があります。この限界を克服するため、複数の反応機構を同時に扱えるような、抽象化された反応機構を対象とした速度論解析も行っています。例えば、反応中間体の数が未知数(<i>N</i>個)の触媒の寿命を予測する理論式(2024 <i>JPCL</i>)を獲得しました。</p>
 			
-		<p>代表的な論文: <a href = https://doi.org/10.1021/acs.jpclett.4c02162><i>JPCL</i> 2024</a></p>	
+		<p>代表論文: <a href = https://doi.org/10.1021/acs.jpclett.4c02162><i>JPCL</i> 2024</a></p>	
 	<div id="footer">
 		<p>&copy:2023 Hideshi Ooka (Last Update: 2024/12/23)</p>
 	</div>
 </div>
+<!-- JavaScript -->
+	<script src="js/script.js"></script>
 </body>
 </html>
 
