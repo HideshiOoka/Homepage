@@ -82,7 +82,7 @@ li {
 .wrapper {
 	width: 900px;
     margin: 0 auto;
-	padding: 1rem;
+	padding: 1rem 0rem;
 }
 /*=====main navbar=====*/
 .navbar ul {
@@ -183,14 +183,15 @@ li.dropdown {
 Individual Styles
 ================================================ */
 /*index.html */
-.toc {
+.fig {
 	/* width: 90vw; */
 	text-align: center;
 	margin-top: 30px; 
 }
 p.caption{	
 	font-style: italic;
-	text-align: center
+	text-align: center;
+	margin-top: 0.3rem;
 }
 
 .news tr {
@@ -230,9 +231,9 @@ table.info th{
 
 /* MOBILE SIZE
 ================================================ */
-@media (max-width: 899px) {
+@media (max-width: 950px) {
 	.wrapper {
-		width : 100vw;
+		width : 95vw;
 	}
 
 	/* Display the Hamburger Menu */
