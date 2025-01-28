@@ -10,6 +10,11 @@ from docx.oxml import OxmlElement
 from CV_utils import sort_authors #,quote
 # date 20171101 for the CSRS Interim report might be off
 #%%
+def set_col_widths(table, widths = [Cm(1.5), Cm(14.5)]):
+    for row in table.rows:
+        for i, width in enumerate(widths):
+            row.cells[i].width = width            
+
 def h1(txt):
     yellow_background = OxmlElement("w:shd")
     yellow_background.set(qn("w:fill"), "#FFF2CC")
@@ -52,7 +57,7 @@ def add_formatted_title(p,title):
     quotes = ['"','"']
     if title.isascii() == False:
         quotes = ['「','」']
-    quote = p.add_run(f" {quotes[0]}")
+    quote = p.add_run(f"{quotes[0]}")
     # bold(quote)
     title = title.replace("--","-")   # -- in SPET
     if "$_" not in title: # no subscripts
@@ -70,7 +75,7 @@ def add_formatted_title(p,title):
             # bold(sub_text)
             upright = p.add_run(upright)
             # bold(upright)
-    quote = p.add_run(f" {quotes[1]}")
+    quote = p.add_run(f"{quotes[1]}")
     # bold(quote)    
     p.add_run(" ") # assuming that there is some information coming after this 
     return p
@@ -94,28 +99,21 @@ def add_formatted_authors(p,authors):
     p.add_run(after)
     return p
 
-def write_entry(i, entry): # need to write the df 
-    
+def write_entry(i, entry): # need to write the df     
     tbl = doc.add_table(1,2)
     tbl.allow_autofit = False
     tbl.autofit = False
-    # tbl.columns[0].width = Cm(0.01)
-    # tbl.columns[1].width = Cm(20)
-    
     tbl.cell(0,0).text = f"{i+1}."
     tbl.cell(0,1).text = ""
     p = tbl.cell(0,1).paragraphs[0]
     
-    
-    
     type,notes,status,url,preprint,bib_key,j_key,title,pages,volume,year,fullname,abbrv,journal,authors,ENTRYTYPE,ID = entry
-    print(authors)
+    # print(authors)
     # ID, authors, journal, year, volume, pages, doi, notes, ENTRYTYPE, type, title, fullname, abbrv, status = entry
     year = str(int(year))
     if volume !="":
         volume = str(int(volume))
     authors = sort_authors(authors)
-    
     p = add_formatted_authors(p,authors) ### Authors:
     p = add_formatted_title(p,title) 
     journal = p.add_run(journal)
@@ -144,36 +142,7 @@ def write_entry(i, entry): # need to write the df
         # comment.font.underline = True
         comment.font.color.rgb = RGBColor.from_string("B10026")
         comment.add_break()
-    
-"""
-def make_publication_list(csv_file, separate_reviews = False):
-    
-    # wrote 0 in the volume of Publications.csv to make the volume read as int
-    df = pd.read_csv(csv_file, index_col = 0).fillna("").astype(str)
-    N = df.shape[0]
-    num_original = 0
-    header = "Academic Publications (All Peer Reviewed)"
-    sub_headers = ["Original Papers","Reviews"]
-    unit = ""
-    #######################
-    if LANG == "_JP":
-        header = "学術論文 (査読あり)"
-        sub_headers = ["原著論文","総説"]
-        unit = " 報"
-    h1(header) # doc.add_heading(header, level=1)
-    df = df.sort_values(by = ["year"], ascending = [False])
-    for i in range(N):
-        if i == 0:
-            h2(f"{sub_headers[0]}: {num_original}{unit}")
-        if i == num_original:
-            h2(f"{sub_headers[1]}: {num_reviews}{unit}")
-
-        num_original = df[df["type"]=="Original"].shape[0]
-        num_reviews = N - num_original
-
-            entry = df.iloc[i]
-            write_entry(i, entry)
-"""
+    set_col_widths(tbl)
     
 def make_publication_list(csv_file, separate_reviews = False):
     publications = pd.read_csv(csv_file, index_col = 0)
@@ -203,8 +172,8 @@ def make_publication_list(csv_file, separate_reviews = False):
         for j in range(N):
             entry = df.iloc[j]
             write_entry(j, entry)
-#### COPIED TO HERE
-########################
+    p = doc.add_paragraph("\n")
+
 def format_date(date,n=8): # change format if n < 8
     date = str(date)
     formatted_date = date[:4]+"/"+date[4:6]+"/"+date[6:8]
@@ -216,36 +185,52 @@ def make_funding_list(funding_csv):
     header = "Funding (Japanese Titles were Translated to English)"
     PI_text = "Principal Investigator"
     Co_PI_text = "Co-Investigator"
+    sub_headers = [PI_text, Co_PI_text]
     unit = "yen"
     if LANG == "_JP":
-        header = "外部資金獲得実績"
+        header = "外部資金獲得状況"
         PI_text = "研究代表者"
         Co_PI_text = "研究分担者"
         unit = "円"
+        sub_headers = [f"【{PI_text}】", f"【{Co_PI_text}】"]
     h1(header) # doc.add_heading(header, level=1)
-    df = pd.read_csv(funding_csv)
-    N = df.shape[0]
-    for i in range(N):
-        data = df.iloc[i]
-        start,finish,title, name, source, PI, amount, unit_ = data[["Start","Finish","Title","PJ_Name","Funding_Source","PI","Amount","Unit"]] # change variable name later
-        if PI == "PI":
-            PI = PI_text
-        else:
-            PI = Co_PI_text
-            
-        tbl = doc.add_table(1,2)
-        tbl.allow_autofit = False
-        tbl.autofit = False
-        tbl.cell(0,0).text = f"{i+1}."
-        tbl.cell(0,1).text = ""
-        p = tbl.cell(0,1).paragraphs[0]
-        p.add_run(f"{source} {name} ({PI})\n")
-        p = add_formatted_title(p,title) 
-        start = str(start)
-        finish = str(finish)
-        formatted_start = start[:4] + " " + months[int(start[4:])]
-        formatted_finish = finish[:4] + " " +months[int(finish[4:])]
-        p.add_run(f"({formatted_start} - {formatted_finish}, {amount} {unit})").add_break()
+    all_df = pd.read_csv(funding_csv)
+    all_df = all_df.sort_values(by = ["Start"], ascending = False)
+    PI_df = all_df[all_df["PI"] == "PI"]
+    Co_PI_df = all_df[all_df["PI"] != "PI"]
+
+    dfs = [PI_df, Co_PI_df]
+    
+    for j, df in enumerate(dfs):
+        # tbl = doc.add_table(1,1)
+        # tbl.cell(0,0).text = sub_headers[j]
+        h2(sub_headers[j])
+
+        N = df.shape[0]
+        for i in range(N):
+            data = df.iloc[i]
+            start,finish,title, name, source, PI, amount, unit_ = data[["Start","Finish","Title","PJ_Name","Funding_Source","PI","Amount","Unit"]] # change variable name later
+            if PI == "PI":
+                PI = PI_text
+            else:
+                PI = Co_PI_text
+                
+            tbl = doc.add_table(1,2)
+            tbl.allow_autofit = False
+            tbl.autofit = False
+            tbl.cell(0,0).text = f"{i+1}."
+            tbl.cell(0,1).text = ""
+            p = tbl.cell(0,1).paragraphs[0]
+            # p.add_run(f"{source} {name} ({PI})\n")
+            p.add_run(f"{source} {name}\n")
+            p = add_formatted_title(p,title) 
+            start = str(start)
+            finish = str(finish)
+            formatted_start = start[:4]# + " " + months[int(start[4:])]
+            formatted_finish = finish[:4]# + " " +months[int(finish[4:])]
+            p.add_run(f"\n({formatted_start} - {formatted_finish}, {amount} {unit})").add_break()
+            set_col_widths(tbl) 
+    p = doc.add_paragraph("\n")
 
 def make_award_list(award_csv):
     header = "Awards (Japanese Titles were Translated to English)"
@@ -276,6 +261,8 @@ def make_award_list(award_csv):
             # comment.font.underline = True
             comment.font.color.rgb = RGBColor.from_string("B10026")
             comment.add_break()
+        set_col_widths(tbl)            
+    p = doc.add_paragraph("\n")
 
 def make_patent_list(patent_csv):
     header = "Patents"
@@ -299,7 +286,8 @@ def make_patent_list(patent_csv):
         p = add_formatted_authors(p,authors)
         p = add_formatted_title(p,title) 
         p.add_run(f" {ID} ({status}).").add_break()
-
+        set_col_widths(tbl) 
+    p = doc.add_paragraph("\n")
 
 
 def make_presentation_list(presentation_csv):
@@ -340,6 +328,8 @@ def make_presentation_list(presentation_csv):
                 # comment.font.underline = True
                 red(comment)
                 comment.add_break()
+            set_col_widths(tbl)
+    p = doc.add_paragraph("\n")  
 
 def make_press_list(press_csv):
     pass ##########
@@ -367,7 +357,7 @@ def make_others_list(others_csv):
         p = doc.add_paragraph(f"{i+1}.  ")
         p.add_run(f"{contents}.").add_break()
 
-LANG = "_JP" # English    
+LANG = ""# "_JP" # English    
 # LANG = "_JP" # Japanese
 doc = Document(f"../templates/CV_Template{LANG}.docx")
 make_publication_list(f"../achievements/Publications.csv", separate_reviews=True)
