@@ -29,8 +29,14 @@ def format_authors(authors):
     return sorted_authors
 """
 
+from CV_utils import write_csv_from_bib
+
+
 
 def write_publications_html(LANG, translate_dict):
+    ### first update the csv file
+    write_csv_from_bib("../achievements/publications.bib") 
+
     #### Main Articles #####
     publications = pd.read_csv(f"../achievements/Publications.csv", index_col = 0) # {LANG}
     publications = publications.sort_values(by = ["status"]).iloc[::-1]
