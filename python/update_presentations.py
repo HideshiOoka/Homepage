@@ -23,7 +23,7 @@ def presentation_df_to_html(df, out_html, format):
 
 def write_presentations_html(LANG, translate_dict):
     file_name = f"../achievements/Presentations{LANG}.csv"
-    all_df = pd.read_csv(file_name)
+    all_df = pd.read_csv(file_name, encoding_errors = "backslashreplace")
     all_df.Date.astype(int)
     # try: 
     #     all_df == all_df.sort_values(by=["Date"])
