@@ -88,6 +88,9 @@ def add_formatted_authors(p,authors):
         if LANG == "_JP":
             my_name = "大岡英史"
             before, after = authors.split(my_name)
+        else:
+            print(authors)
+            before, after = "XXX", "XXX"
     text_tag_list = [f"{before};",
                      f"{my_name};bu",
                      f"{after};"]
@@ -145,7 +148,7 @@ def write_entry(i, entry): # need to write the df
     set_col_widths(tbl)
     
 def make_publication_list(csv_file, separate_reviews = False):
-    publications = pd.read_csv(csv_file, index_col = 0)
+    publications = pd.read_csv(csv_file, index_col = 0, encoding_errors = "backslashreplace")
     publications = publications.sort_values(by = ["status"]).iloc[::-1]
     # The 2 step sort is done to prioritize empty status (=accepted) articles in the order
     publications = publications.sort_values(by = ["type","year"], ascending = [True, False]).fillna("")
@@ -194,7 +197,7 @@ def make_funding_list(funding_csv):
         unit = "円"
         sub_headers = [f"【{PI_text}】", f"【{Co_PI_text}】"]
     h1(header) # doc.add_heading(header, level=1)
-    all_df = pd.read_csv(funding_csv)
+    all_df = pd.read_csv(funding_csv, encoding_errors = "backslashreplace")
     all_df = all_df.sort_values(by = ["Start"], ascending = False)
     PI_df = all_df[all_df["PI"] == "PI"]
     Co_PI_df = all_df[all_df["PI"] != "PI"]
@@ -237,7 +240,7 @@ def make_award_list(award_csv):
     if LANG == "_JP":
         header = "受賞歴"
     h1(header) # doc.add_heading(header, level=1)
-    df = pd.read_csv(award_csv)
+    df = pd.read_csv(award_csv, encoding_errors = "backslashreplace")
     N = df.shape[0]
     for i in range(N):
         data = df.iloc[i].astype(str)
@@ -269,7 +272,7 @@ def make_patent_list(patent_csv):
     if LANG == "_JP":
         header = "知財・特許"
     h1(header) # doc.add_heading(header, level=1)
-    df = pd.read_csv(patent_csv)
+    df = pd.read_csv(patent_csv, encoding_errors = "backslashreplace")
     N = df.shape[0]
     for i in range(N):
         data = df.iloc[i,:5]
@@ -297,7 +300,7 @@ def make_presentation_list(presentation_csv):
     h1(header) # doc.add_heading(header, level=1)
     format_list = ["Invited","Oral","Poster"]
     format_list_JP = ["【招待講演】","【口頭発表】","【ポスター発表】"]
-    all_df = pd.read_csv(presentation_csv)
+    all_df = pd.read_csv(presentation_csv, encoding_errors = "backslashreplace")
     for j,df in enumerate(format_list):
         df = all_df[all_df["Format"] == format_list[j]]
         df = df.sort_values(by = "Date", ascending = False)
@@ -357,7 +360,7 @@ def make_others_list(others_csv):
         p = doc.add_paragraph(f"{i+1}.  ")
         p.add_run(f"{contents}.").add_break()
 
-LANG = ""# "_JP" # English    
+LANG = "_JP"# "_JP" # English    
 # LANG = "_JP" # Japanese
 doc = Document(f"../templates/CV_Template{LANG}.docx")
 make_publication_list(f"../achievements/Publications.csv", separate_reviews=True)
