@@ -377,6 +377,7 @@ doc.save(f"../achievements/Ooka_CV{LANG}_draft.docx")
 
 
 #%% To do list:
+# change order in the exported publications
 # The draft version has equal width columns and needs to be changed manually. 20240820
 # Also check new line locations
 # After outputting the docs, the 1ページの行数を指定時に文字をグリッド線に合わせる needs to be unchecked (Ctrl + A). 20240820, not necessary?

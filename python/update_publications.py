@@ -32,6 +32,16 @@ def format_authors(authors):
 from CV_utils import write_csv_from_bib
 
 
+def reorder_publications(publications):
+    priority = publications.author.str.count("Ooka\*")
+    priority += publications.author.str.startswith("Ooka")
+    priority += 2*publications.journal.str.count("Nature")
+    priority += 2*publications.journal.str.count("Science")
+    priority += publications.journal.str.count("Nat.")
+    publications["priority"] = priority
+    publications = publications.sort_values(by = ["type", "year", "priority","status"], ascending = [True, False, False, False]).fillna("")
+    return publications
+
 
 def write_publications_html(LANG, translate_dict):
     ### first update the csv file
@@ -39,9 +49,9 @@ def write_publications_html(LANG, translate_dict):
 
     #### Main Articles #####
     publications = pd.read_csv(f"../achievements/Publications.csv", index_col = 0) # {LANG}
-    publications = publications.sort_values(by = ["status"]).iloc[::-1]
-    # The 2 step sort is done to prioritize empty status (=accepted) articles in the order
-    publications = publications.sort_values(by = ["type","year"], ascending = [True, False]).fillna("")
+    publications = reorder_publications(publications)
+
+
     original = publications[publications["type"]=="Original"]
     review = publications[publications["type"]=="Review"]
     editorial = publications[publications["type"]=="Editorial"]
@@ -63,7 +73,7 @@ def write_publications_html(LANG, translate_dict):
         N = df.shape[0]
         for j in range(N):
             data = df.iloc[j]# .astype(str)
-            type,notes,status,url,preprint,bib_key,j_key,title,pages,volume,year,fullname,abbrv,journal,authors,ENTRYTYPE,ID  = data
+            type,notes,status,url,preprint,bib_key,j_key,title,pages,volume,year,fullname,abbrv,journal,authors,ENTRYTYPE,ID,priority  = data
             year = int(year)
             if year < year_header:
                 year_header = year
