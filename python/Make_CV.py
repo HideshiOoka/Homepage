@@ -8,6 +8,7 @@ import re
 from docx.oxml.ns import qn
 from docx.oxml import OxmlElement
 from CV_utils import sort_authors #,quote
+from update_publications import reorder_publications
 # date 20171101 for the CSRS Interim report might be off
 #%%
 def set_col_widths(table, widths = [Cm(1.5), Cm(14.5)]):
@@ -57,7 +58,7 @@ def add_formatted_title(p,title):
     quotes = ['"','"']
     if title.isascii() == False:
         quotes = ['「','」']
-    quote = p.add_run(f"{quotes[0]}")
+    quote = p.add_run(f" {quotes[0]}")
     # bold(quote)
     title = title.replace("--","-")   # -- in SPET
     if "$_" not in title: # no subscripts
@@ -110,7 +111,7 @@ def write_entry(i, entry): # need to write the df
     tbl.cell(0,1).text = ""
     p = tbl.cell(0,1).paragraphs[0]
     
-    type,notes,status,url,preprint,bib_key,j_key,title,pages,volume,year,fullname,abbrv,journal,authors,ENTRYTYPE,ID = entry
+    type,notes,status,url,preprint,bib_key,j_key,title,pages,volume,year,fullname,abbrv,journal,authors,ENTRYTYPE,ID,priority = entry
     # print(authors)
     # ID, authors, journal, year, volume, pages, doi, notes, ENTRYTYPE, type, title, fullname, abbrv, status = entry
     year = str(int(year))
@@ -149,7 +150,8 @@ def write_entry(i, entry): # need to write the df
     
 def make_publication_list(csv_file, separate_reviews = False):
     publications = pd.read_csv(csv_file, index_col = 0, encoding_errors = "backslashreplace")
-    publications = publications.sort_values(by = ["status"]).iloc[::-1]
+    publications = reorder_publications(publications)
+
     # The 2 step sort is done to prioritize empty status (=accepted) articles in the order
     publications = publications.sort_values(by = ["type","year"], ascending = [True, False]).fillna("")
     original = publications[publications["type"]=="Original"]
@@ -359,19 +361,18 @@ def make_others_list(others_csv):
         formatted_date = format_date(date)
         p = doc.add_paragraph(f"{i+1}.  ")
         p.add_run(f"{contents}.").add_break()
-
-LANG = "_JP"# "_JP" # English    
-# LANG = "_JP" # Japanese
-doc = Document(f"../templates/CV_Template{LANG}.docx")
-make_publication_list(f"../achievements/Publications.csv", separate_reviews=True)
-make_presentation_list(f"../achievements/Presentations{LANG}.csv")
-make_patent_list(f"../achievements/Patents{LANG}.csv")
-make_award_list(f"../achievements/Awards{LANG}.csv")
-make_funding_list(f"../achievements/Funding{LANG}.csv")
-make_education_list(f"../achievements/Funding{LANG}.csv")
-# make_press_list("../achievements/Press.csv")
-# make_others_list("../achievements/Others{LANG}.csv")
-doc.save(f"../achievements/Ooka_CV{LANG}_draft.docx")
+for LANG in ["","_JP"]:
+        
+    doc = Document(f"../templates/CV_Template{LANG}.docx")
+    make_publication_list(f"../achievements/Publications.csv", separate_reviews=True)
+    make_presentation_list(f"../achievements/Presentations{LANG}.csv")
+    make_patent_list(f"../achievements/Patents{LANG}.csv")
+    make_award_list(f"../achievements/Awards{LANG}.csv")
+    make_funding_list(f"../achievements/Funding{LANG}.csv")
+    make_education_list(f"../achievements/Funding{LANG}.csv")
+    # make_press_list("../achievements/Press.csv")
+    # make_others_list("../achievements/Others{LANG}.csv")
+    doc.save(f"../achievements/Ooka_CV{LANG}_draft.docx")
 
 
 
