@@ -17,4 +17,3 @@ for LANG in ["","_JP"]:
     write_awards_html(LANG)
     write_funding_html(LANG,translate_dict)
     # update funding, add hyphen japanese
-# %%
