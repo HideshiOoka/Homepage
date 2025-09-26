@@ -15,6 +15,11 @@ def write_funding_html(LANG, translate_dict):
     for i in range(N):
         data = df.iloc[i].astype(str)
         start,finish,title,name,funding_source,PI,amount,unit = data
+        if PI != "PI":
+            PI = "collaborator"
+        if LANG == "_JP":
+            PI = PI.replace("PI", "代表").replace("collaborator","分担")
+
         out_html += f'\t\t<li><b>{name}</b> "{title}" ({PI}), {amount} {unit} ({start}--{finish}).</li><br>\n\n'
     out_html +="\t</ol>\n\n"
     with open(f"../funding{LANG}.html", "r", encoding="utf-8") as f:

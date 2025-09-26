@@ -1,6 +1,7 @@
 #%%
 import pandas as pd
 import numpy as np
+import docx
 from docx import Document
 from docx.shared import RGBColor, Pt, Cm
 from docx.enum.text import WD_LINE_SPACING
@@ -14,16 +15,18 @@ from update_publications import reorder_publications
 def set_col_widths(table, widths = [Cm(1.5), Cm(14.5)]):
     for row in table.rows:
         for i, width in enumerate(widths):
-            row.cells[i].width = width            
+            row.cells[i].width = width 
 
 def h1(txt):
     yellow_background = OxmlElement("w:shd")
     yellow_background.set(qn("w:fill"), "#FFF2CC")
     tbl = doc.add_table(1,1)
+    # tbl.rows[0].height = Pt(16)
     tbl.cell(0,0).text = txt
     tbl.rows[0].cells[0]._tc.get_or_add_tcPr().append(yellow_background)
     header = tbl.cell(0,0).paragraphs[0].runs[0]
     header.font.size = Pt(14)
+    # header.line_spacing = Pt(14)
     bold(header)
     """
     header = tbl.cell(0,0).paragraphs[0].runs[0].font.name = "Arial"
@@ -137,7 +140,10 @@ def write_entry(i, entry): # need to write the df
         p.add_run("(")
         p.add_run(status).italic = True
         p.add_run(")")
-    p.add_run(".").add_break()
+    p.add_run(".\t")
+    assert url != ""
+    add_hyperlink(p, url, "(URL)")
+    p.add_run("").add_break()
     if notes != "":
         if LANG == "_JP":
             notes = notes.replace("Representative Paper", "代表論文")
@@ -336,6 +342,22 @@ def make_presentation_list(presentation_csv):
             set_col_widths(tbl)
     p = doc.add_paragraph("\n")  
 
+
+def add_hyperlink(paragraph, url, text):
+    # https://github.com/python-openxml/python-docx/issues/384
+    part = paragraph.part
+    r_id = part.relate_to(url, docx.opc.constants.RELATIONSHIP_TYPE.HYPERLINK, is_external=True)
+    hyperlink = docx.oxml.shared.OxmlElement('w:hyperlink')
+    hyperlink.set(docx.oxml.shared.qn('r:id'), r_id, )
+    new_run = docx.oxml.shared.OxmlElement('w:r')
+    rPr = docx.oxml.shared.OxmlElement('w:rPr')
+    new_run.append(rPr)
+    new_run.text = text
+    hyperlink.append(new_run)
+    paragraph._p.append(hyperlink)
+    return hyperlink
+
+
 def make_press_list(press_csv):
     pass ##########
 
@@ -361,7 +383,7 @@ def make_others_list(others_csv):
         formatted_date = format_date(date)
         p = doc.add_paragraph(f"{i+1}.  ")
         p.add_run(f"{contents}.").add_break()
-for LANG in ["","_JP"]:
+for LANG in ["","_JP"]: #
         
     doc = Document(f"../templates/CV_Template{LANG}.docx")
     make_publication_list(f"../achievements/Publications.csv", separate_reviews=True)
