@@ -4,6 +4,7 @@ from update_presentations import write_presentations_html
 from update_awards import write_awards_html
 from update_funding import write_funding_html
 from CV_utils import write_csv_from_bib
+
 # from python.archived.clean_bib import save_cleaned_bib
 from translate import define_translate_dict
 
