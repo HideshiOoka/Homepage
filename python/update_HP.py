@@ -10,10 +10,11 @@ from translate import define_translate_dict
 
 # translate_dict = define_translate_dict("translate_dict.csv")
 translate_dict ={}
-# write_csv_from_bib("../achievements/Publications.bib")       
+write_csv_from_bib("../achievements/Publications.bib")       
 # save_cleaned_bib()
 for LANG in ["","_JP"]:
     write_presentations_html(LANG, translate_dict)
+    # check hyphens in page numbers are OK if there is a cp932 error
     write_publications_html(LANG, translate_dict)
     write_awards_html(LANG)
     write_funding_html(LANG,translate_dict)
