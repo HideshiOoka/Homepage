@@ -141,8 +141,8 @@ def write_entry(i, entry): # need to write the df
         p.add_run(status).italic = True
         p.add_run(")")
     p.add_run(".\t")
-    assert url != ""
-    add_hyperlink(p, url, "(URL)")
+    # assert url != ""
+    # add_hyperlink(p, url, "(URL)")
     p.add_run("").add_break()
     if notes != "":
         if LANG == "_JP":
