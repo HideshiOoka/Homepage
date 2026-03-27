@@ -189,7 +189,7 @@ Individual Styles
 	margin-top: 30px; 
 }
 p.caption{	
-	font-style: italic;
+	/*font-style: italic;*/
 	text-align: center;
 	margin-top: 0.3rem;
 }
